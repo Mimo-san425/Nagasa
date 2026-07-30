@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
+
 <title>テープの長さをはかろう</title>
 
 <style>
@@ -42,6 +43,7 @@ input {
 
 button {
   border: none;
+  cursor: pointer;
   touch-action: manipulation;
 }
 
@@ -103,7 +105,7 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 4px solid #79bbe7;
   border-radius: 19px;
   background: #ffffff;
@@ -112,7 +114,7 @@ button {
 
 .problem-number {
   position: absolute;
-  top: 9px;
+  top: 10px;
   left: 12px;
   z-index: 5;
   width: 51px;
@@ -127,18 +129,20 @@ button {
 }
 
 .tape-zone {
+  position: relative;
+  z-index: 2;
   flex: 0 0 auto;
-  width: min(1020px, 93%);
-  margin: 38px auto 0;
+  width: min(1020px, 94%);
+  margin: 43px auto 0;
 }
 
 .tape-row {
   display: grid;
-  grid-template-columns: 105px minmax(200px, 1fr) 220px;
+  grid-template-columns: 110px minmax(200px, 1fr) 215px;
   align-items: center;
-  gap: 15px;
-  min-height: 78px;
-  margin-bottom: 3px;
+  gap: 14px;
+  min-height: 90px;
+  margin-bottom: 5px;
 }
 
 .tape-name {
@@ -149,19 +153,29 @@ button {
 
 .tape-track {
   position: relative;
-  height: 62px;
+  height: 72px;
   display: flex;
   align-items: center;
-  padding-left: 4px;
-  border-left: 4px dashed #839dad;
+  padding-left: 0;
+}
+
+.tape-start-line {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 4px;
+  height: 62px;
+  background: #3f5360;
+  border-radius: 2px;
 }
 
 .tape {
   position: relative;
   height: 50px;
+  margin-left: 0;
   border: 3px solid;
-  border-radius: 3px;
-  box-shadow: 0 4px 8px rgba(0,0,0,.12);
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.13);
 }
 
 .tape::before,
@@ -169,33 +183,33 @@ button {
   content: "";
   position: absolute;
   top: -3px;
-  width: 10px;
+  width: 9px;
   height: calc(100% + 6px);
   background:
     linear-gradient(
       135deg,
-      transparent 0 22%,
-      currentColor 23% 32%,
-      transparent 33% 48%,
-      currentColor 49% 58%,
+      transparent 0 20%,
+      currentColor 21% 31%,
+      transparent 32% 47%,
+      currentColor 48% 58%,
       transparent 59% 74%,
-      currentColor 75% 84%,
-      transparent 85%
+      currentColor 75% 85%,
+      transparent 86%
     );
 }
 
 .tape::before {
-  left: -7px;
+  left: -6px;
 }
 
 .tape::after {
-  right: -7px;
+  right: -6px;
   transform: scaleX(-1);
 }
 
 .tape-a {
-  color: #e84982;
-  border-color: #e84982;
+  color: #dd3e78;
+  border-color: #dd3e78;
   background-color: #ff9fc0;
   background-image:
     radial-gradient(
@@ -203,17 +217,17 @@ button {
       rgba(255,255,255,.9) 0 4px,
       transparent 5px
     );
-  background-size: 28px 28px;
+  background-size: 27px 27px;
 }
 
 .tape-b {
-  color: #1d98d5;
-  border-color: #1d98d5;
+  color: #1489c8;
+  border-color: #1489c8;
   background-color: #83d7fa;
   background-image:
     repeating-linear-gradient(
       135deg,
-      rgba(255,255,255,.4) 0 8px,
+      rgba(255,255,255,.42) 0 8px,
       transparent 8px 18px
     );
 }
@@ -229,13 +243,13 @@ button {
 
 .number-input,
 .calc-input {
-  width: 86px;
-  height: 55px;
+  width: 82px;
+  height: 54px;
   border: 4px solid #263746;
   border-radius: 12px;
   background: #ffffff;
   color: #111111;
-  font-size: 31px;
+  font-size: 30px;
   font-weight: 900;
   text-align: center;
   outline: none;
@@ -250,68 +264,92 @@ button {
 }
 
 .calculation {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 7px auto 5px;
+  gap: 9px;
+  width: fit-content;
+  margin: 8px auto 0;
   padding: 8px 15px;
   border: 3px solid #ffc847;
   border-radius: 16px;
   background: #fff9d9;
-  font-size: clamp(21px, 2.4vw, 31px);
+  font-size: clamp(21px, 2.3vw, 30px);
   font-weight: 900;
 }
 
-.ruler-area {
+.ruler-home {
   position: relative;
+  z-index: 1;
   flex: 1 1 auto;
-  min-height: 145px;
-  margin-top: 4px;
+  min-height: 135px;
+  margin-top: 10px;
   border: 3px dashed #a7c4d8;
   border-radius: 15px;
   background: #f4fbff;
-  overflow: hidden;
-}
-
-.ruler-help {
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 100%;
-  margin: 0;
-  color: #4b6475;
-  font-size: 18px;
-  font-weight: 900;
-  text-align: center;
   pointer-events: none;
 }
 
+.ruler-home-text {
+  margin: 9px 0 0;
+  color: #536c7c;
+  font-size: 18px;
+  font-weight: 900;
+  text-align: center;
+}
+
+/* 本物に近い透明定規 */
+
 .ruler {
   position: absolute;
-  left: 20px;
-  top: 37px;
+  left: 100px;
+  top: 320px;
+  z-index: 50;
   height: 94px;
-  border: 4px solid #176fae;
-  border-radius: 11px;
+  border: 3px solid rgba(38, 101, 151, .92);
+  border-radius: 5px;
   background:
     linear-gradient(
       to bottom,
-      rgba(255,255,255,.9),
-      rgba(156,216,255,.85)
+      rgba(225, 245, 255, .76),
+      rgba(181, 222, 246, .58)
     );
-  box-shadow: 0 7px 13px rgba(0,0,0,.18);
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.22),
+    inset 0 0 0 2px rgba(255,255,255,.7);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
   overflow: hidden;
-  z-index: 20;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 
 .ruler.dragging {
   cursor: grabbing;
-  box-shadow: 0 10px 20px rgba(0,0,0,.28);
+  box-shadow:
+    0 12px 23px rgba(0,0,0,.31),
+    inset 0 0 0 2px rgba(255,255,255,.7);
+}
+
+.ruler-grip {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  display: flex;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.ruler-grip span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(24, 90, 140, .65);
 }
 
 .ruler-scale {
@@ -323,32 +361,34 @@ button {
 .tick {
   position: absolute;
   top: 0;
-  width: 2px;
-  background: #111820;
-  transform: translateX(-1px);
+  width: 1.5px;
+  background: #15212a;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
-.tick.small {
-  height: 22px;
+.tick.mm {
+  height: 19px;
 }
 
-.tick.middle {
-  height: 32px;
+.tick.half {
+  width: 2px;
+  height: 29px;
 }
 
-.tick.large {
-  width: 3px;
-  height: 46px;
-  transform: translateX(-1.5px);
+.tick.cm {
+  width: 2.5px;
+  height: 42px;
 }
 
 .ruler-number {
   position: absolute;
-  top: 47px;
+  top: 45px;
   transform: translateX(-50%);
-  font-size: 20px;
+  color: #101820;
+  font-size: 19px;
   font-weight: 900;
+  line-height: 1;
   pointer-events: none;
 }
 
@@ -360,13 +400,23 @@ button {
   transform: translateX(calc(-100% - 4px));
 }
 
-.ruler-cm {
+.ruler-unit {
   position: absolute;
-  left: 12px;
-  bottom: 5px;
-  color: #135f9c;
-  font-size: 16px;
+  left: 13px;
+  bottom: 7px;
+  color: #155d92;
+  font-size: 15px;
   font-weight: 900;
+  pointer-events: none;
+}
+
+.zero-guide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(220, 37, 66, .85);
   pointer-events: none;
 }
 
@@ -406,7 +456,7 @@ button {
 
 .result {
   flex: 0 0 auto;
-  min-height: 36px;
+  min-height: 35px;
   margin-top: 4px;
   font-size: 24px;
   font-weight: 900;
@@ -446,7 +496,7 @@ button {
   }
 
   .main-area {
-    padding: 8px 10px;
+    padding: 9px 10px;
   }
 
   .tape-zone {
@@ -454,13 +504,13 @@ button {
   }
 
   .tape-row {
-    grid-template-columns: 84px minmax(150px, 1fr) 185px;
-    gap: 9px;
-    min-height: 71px;
+    grid-template-columns: 85px minmax(150px, 1fr) 182px;
+    gap: 8px;
+    min-height: 82px;
   }
 
   .tape-name {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .measure-input-area {
@@ -469,14 +519,14 @@ button {
 
   .number-input,
   .calc-input {
-    width: 74px;
-    height: 49px;
-    font-size: 28px;
+    width: 70px;
+    height: 48px;
+    font-size: 27px;
   }
 
   .calculation {
-    gap: 7px;
-    padding: 6px 10px;
+    gap: 6px;
+    padding: 6px 9px;
   }
 }
 </style>
@@ -487,7 +537,10 @@ button {
 <div class="app">
 
   <header class="header">
-    <h1 class="title">テープの 長さを はかろう</h1>
+
+    <h1 class="title">
+      テープの 長さを はかろう
+    </h1>
 
     <button
       type="button"
@@ -496,15 +549,22 @@ button {
     >
       定規をもどす
     </button>
+
   </header>
 
   <p class="instruction">
-    画面の定規を動かして長さをはかり、数字を書いて、たし算しましょう。
+    定規の0をテープの左端に合わせて、長さをはかりましょう。
   </p>
 
-  <main class="main-area">
+  <main
+    class="main-area"
+    id="mainArea"
+  >
 
-    <div class="problem-number" id="problemNumber">
+    <div
+      class="problem-number"
+      id="problemNumber"
+    >
       ①
     </div>
 
@@ -517,13 +577,18 @@ button {
         </div>
 
         <div class="tape-track">
+
+          <div class="tape-start-line"></div>
+
           <div
             class="tape tape-a"
             id="tapeA"
           ></div>
+
         </div>
 
         <label class="measure-input-area">
+
           長さ
 
           <input
@@ -536,6 +601,7 @@ button {
           >
 
           cm
+
         </label>
 
       </div>
@@ -547,13 +613,18 @@ button {
         </div>
 
         <div class="tape-track">
+
+          <div class="tape-start-line"></div>
+
           <div
             class="tape tape-b"
             id="tapeB"
           ></div>
+
         </div>
 
         <label class="measure-input-area">
+
           長さ
 
           <input
@@ -566,67 +637,82 @@ button {
           >
 
           cm
+
         </label>
 
       </div>
 
-      <div class="calculation">
-
-        <input
-          id="calcA"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-        >
-
-        <span>cm</span>
-
-        <span>＋</span>
-
-        <input
-          id="calcB"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-        >
-
-        <span>cm</span>
-
-        <span>＝</span>
-
-        <input
-          id="calcAnswer"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-        >
-
-        <span>cm</span>
-
-      </div>
-
     </section>
 
-    <section class="ruler-area" id="rulerArea">
+    <div class="calculation">
 
-      <p class="ruler-help">
-        青い定規を指で動かしてください。
+      <input
+        id="calcA"
+        class="calc-input"
+        type="number"
+        inputmode="numeric"
+      >
+
+      <span>cm</span>
+
+      <span>＋</span>
+
+      <input
+        id="calcB"
+        class="calc-input"
+        type="number"
+        inputmode="numeric"
+      >
+
+      <span>cm</span>
+
+      <span>＝</span>
+
+      <input
+        id="calcAnswer"
+        class="calc-input"
+        type="number"
+        inputmode="numeric"
+      >
+
+      <span>cm</span>
+
+    </div>
+
+    <div class="ruler-home">
+
+      <p class="ruler-home-text">
+        定規をここから動かして、テープの上に重ねてください。
       </p>
 
-      <div class="ruler" id="ruler">
+    </div>
 
-        <div
-          class="ruler-scale"
-          id="rulerScale"
-        ></div>
+    <div
+      class="ruler"
+      id="ruler"
+    >
 
-        <div class="ruler-cm">
-          cm
-        </div>
+      <div class="zero-guide"></div>
 
+      <div
+        class="ruler-scale"
+        id="rulerScale"
+      ></div>
+
+      <div class="ruler-unit">
+        cm
       </div>
 
-    </section>
+      <div class="ruler-grip">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
 
   </main>
 
@@ -664,10 +750,10 @@ button {
 document.addEventListener("DOMContentLoaded", function () {
 
   /*
-    テープと定規は、どちらも同じ値を使います。
-    1cm = 48pxとして画面上で統一しています。
+    テープと定規は同じ縮尺です。
+    1cm = 46px
   */
-  const PIXELS_PER_CM = 48;
+  const PIXELS_PER_CM = 46;
   const RULER_MAX_CM = 10;
 
   const problems = [
@@ -687,6 +773,9 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   let problemIndex = 0;
+
+  const mainArea =
+    document.getElementById("mainArea");
 
   const problemNumber =
     document.getElementById("problemNumber");
@@ -721,9 +810,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const rulerScale =
     document.getElementById("rulerScale");
 
-  const rulerArea =
-    document.getElementById("rulerArea");
-
   const resetRulerButton =
     document.getElementById("resetRulerButton");
 
@@ -753,12 +839,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const tick =
         document.createElement("div");
 
-      tick.className = "tick";
       tick.style.left =
         position + "px";
 
       if (millimeter % 10 === 0) {
-        tick.classList.add("large");
+        tick.className = "tick cm";
 
         const number =
           document.createElement("div");
@@ -785,13 +870,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         rulerScale.appendChild(number);
 
-      } else if (
-        millimeter % 5 === 0
-      ) {
-        tick.classList.add("middle");
+      } else if (millimeter % 5 === 0) {
+        tick.className = "tick half";
 
       } else {
-        tick.classList.add("small");
+        tick.className = "tick mm";
       }
 
       rulerScale.appendChild(tick);
@@ -827,25 +910,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function resetRulerPosition() {
-    const maximumLeft =
+    const mainWidth =
+      mainArea.clientWidth;
+
+    const mainHeight =
+      mainArea.clientHeight;
+
+    const rulerWidth =
+      ruler.offsetWidth;
+
+    const rulerHeight =
+      ruler.offsetHeight;
+
+    const left =
       Math.max(
-        0,
-        rulerArea.clientWidth -
-        ruler.offsetWidth
+        10,
+        (mainWidth - rulerWidth) / 2
       );
 
-    const maximumTop =
+    const top =
       Math.max(
-        0,
-        rulerArea.clientHeight -
-        ruler.offsetHeight
+        10,
+        mainHeight -
+        rulerHeight -
+        20
       );
 
     ruler.style.left =
-      maximumLeft / 2 + "px";
+      left + "px";
 
     ruler.style.top =
-      Math.min(37, maximumTop) + "px";
+      top + "px";
   }
 
   function showProblem() {
@@ -917,49 +1012,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const measureAOk =
-      Number(measureA.value) ===
-      problem.a;
+      Number(measureA.value) === problem.a;
 
     const measureBOk =
-      Number(measureB.value) ===
-      problem.b;
+      Number(measureB.value) === problem.b;
 
     const calcAOk =
-      Number(calcA.value) ===
-      problem.a;
+      Number(calcA.value) === problem.a;
 
     const calcBOk =
-      Number(calcB.value) ===
-      problem.b;
+      Number(calcB.value) === problem.b;
 
     const answerOk =
       Number(calcAnswer.value) ===
       problem.a + problem.b;
 
-    setInputState(
-      measureA,
-      measureAOk
-    );
-
-    setInputState(
-      measureB,
-      measureBOk
-    );
-
-    setInputState(
-      calcA,
-      calcAOk
-    );
-
-    setInputState(
-      calcB,
-      calcBOk
-    );
-
-    setInputState(
-      calcAnswer,
-      answerOk
-    );
+    setInputState(measureA, measureAOk);
+    setInputState(measureB, measureBOk);
+    setInputState(calcA, calcAOk);
+    setInputState(calcB, calcBOk);
+    setInputState(calcAnswer, answerOk);
 
     if (
       measureAOk &&
@@ -986,10 +1058,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function nextProblem() {
     problemIndex++;
 
-    if (
-      problemIndex >=
-      problems.length
-    ) {
+    if (problemIndex >= problems.length) {
       problemIndex = 0;
     }
 
@@ -1032,49 +1101,43 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const areaRect =
-      rulerArea.getBoundingClientRect();
+    const mainRect =
+      mainArea.getBoundingClientRect();
 
     let newLeft =
       event.clientX -
-      areaRect.left -
+      mainRect.left -
       pointerOffsetX;
 
     let newTop =
       event.clientY -
-      areaRect.top -
+      mainRect.top -
       pointerOffsetY;
 
     const maximumLeft =
       Math.max(
         0,
-        rulerArea.clientWidth -
+        mainArea.clientWidth -
         ruler.offsetWidth
       );
 
     const maximumTop =
       Math.max(
         0,
-        rulerArea.clientHeight -
+        mainArea.clientHeight -
         ruler.offsetHeight
       );
 
     newLeft =
       Math.max(
         0,
-        Math.min(
-          maximumLeft,
-          newLeft
-        )
+        Math.min(maximumLeft, newLeft)
       );
 
     newTop =
       Math.max(
         0,
-        Math.min(
-          maximumTop,
-          newTop
-        )
+        Math.min(maximumTop, newTop)
       );
 
     ruler.style.left =
@@ -1107,7 +1170,8 @@ document.addEventListener("DOMContentLoaded", function () {
   measureA.addEventListener(
     "input",
     function () {
-      calcA.value = measureA.value;
+      calcA.value =
+        measureA.value;
 
       measureA.classList.remove(
         "correct-input",
@@ -1126,7 +1190,8 @@ document.addEventListener("DOMContentLoaded", function () {
   measureB.addEventListener(
     "input",
     function () {
-      calcB.value = measureB.value;
+      calcB.value =
+        measureB.value;
 
       measureB.classList.remove(
         "correct-input",
@@ -1198,7 +1263,9 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener(
     "resize",
     function () {
-      resetRulerPosition();
+      requestAnimationFrame(
+        resetRulerPosition
+      );
     }
   );
 
