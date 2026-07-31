@@ -2,7 +2,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+>
 <title>テープの長さをはかろう</title>
 
 <style>
@@ -11,7 +14,8 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   width:100%;
   height:100%;
   margin:0;
@@ -22,18 +26,17 @@ html,body{
 body{
   background:#eaf6ff;
   color:#17212b;
-  font-family:"UD デジタル 教科書体 N-R","Hiragino Sans","Yu Gothic",sans-serif;
+  font-family:
+    "UD デジタル 教科書体 N-R",
+    "Hiragino Sans",
+    "Yu Gothic",
+    sans-serif;
   touch-action:manipulation;
-}
-
-button,input{
-  font:inherit;
 }
 
 button{
+  font:inherit;
   border:none;
-  cursor:pointer;
-  touch-action:manipulation;
 }
 
 .app{
@@ -41,7 +44,7 @@ button{
   height:100dvh;
   display:flex;
   flex-direction:column;
-  padding:8px 12px 10px;
+  padding:7px 10px 8px;
 }
 
 .header{
@@ -49,41 +52,41 @@ button{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-bottom:6px;
+  gap:10px;
+  margin-bottom:5px;
 }
 
 h1{
   margin:0;
   color:#176aab;
-  font-size:clamp(26px,3vw,39px);
+  font-size:clamp(24px,3vw,38px);
 }
 
 .header-right{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:9px;
 }
 
 .progress{
-  min-width:112px;
-  padding:8px 13px;
+  min-width:105px;
+  padding:7px 11px;
   border:3px solid #60a9d8;
   border-radius:14px;
   background:#fff;
   color:#175f96;
-  font-size:20px;
+  font-size:19px;
   font-weight:900;
   text-align:center;
 }
 
 .reset-button{
-  min-height:46px;
-  padding:7px 15px;
+  min-height:44px;
+  padding:7px 13px;
   border-radius:14px;
   background:#fff;
   color:#176aab;
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
   box-shadow:0 4px 0 #b5d5e8;
 }
@@ -95,11 +98,11 @@ h1{
 
 .instruction{
   flex:0 0 auto;
-  margin:0 0 6px;
-  padding:7px 14px;
-  border-radius:14px;
+  margin:0 0 5px;
+  padding:6px 12px;
+  border-radius:13px;
   background:#fff;
-  font-size:clamp(17px,1.9vw,23px);
+  font-size:clamp(16px,1.8vw,22px);
   font-weight:900;
   text-align:center;
 }
@@ -110,51 +113,51 @@ h1{
   min-height:0;
   overflow:hidden;
   border:4px solid #78bce8;
-  border-radius:20px;
+  border-radius:19px;
   background:#fff;
 }
 
 .problem-number{
   position:absolute;
-  top:9px;
-  left:11px;
+  top:8px;
+  left:10px;
   z-index:5;
-  min-width:65px;
-  height:48px;
+  min-width:70px;
+  height:45px;
   padding:0 10px;
   display:grid;
   place-items:center;
   border:4px solid #17212b;
-  border-radius:24px;
+  border-radius:23px;
   background:#fff;
-  font-size:23px;
+  font-size:21px;
   font-weight:900;
 }
 
 .tape-area{
   position:relative;
   z-index:2;
-  width:min(1100px,96%);
-  margin:54px auto 0;
+  width:min(1120px,97%);
+  margin:50px auto 0;
 }
 
 .tape-row{
   display:grid;
-  grid-template-columns:105px minmax(250px,1fr) 270px;
+  grid-template-columns:95px minmax(220px,1fr) 260px;
   align-items:center;
-  gap:14px;
-  min-height:92px;
+  gap:11px;
+  min-height:78px;
 }
 
 .tape-label{
-  font-size:21px;
+  font-size:20px;
   font-weight:900;
   text-align:center;
 }
 
 .tape-track{
   position:relative;
-  height:72px;
+  height:62px;
   display:flex;
   align-items:center;
 }
@@ -162,15 +165,15 @@ h1{
 .start-line{
   position:absolute;
   left:0;
-  top:7px;
+  top:3px;
   width:4px;
-  height:58px;
+  height:56px;
   background:#273b49;
 }
 
 .tape{
   position:relative;
-  height:46px;
+  height:44px;
   border:3px solid;
   box-shadow:0 4px 8px rgba(0,0,0,.15);
 }
@@ -233,62 +236,92 @@ h1{
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  gap:12px;
-  font-size:27px;
+  gap:10px;
+  font-size:25px;
   font-weight:900;
   white-space:nowrap;
 }
 
-input{
-  width:110px;
-  height:70px;
+.answer-slot{
+  width:105px;
+  height:66px;
+  display:grid;
+  place-items:center;
   border:4px solid #283a48;
   border-radius:14px;
   background:#fff;
-  font-size:40px;
+  font-size:39px;
   font-weight:900;
-  text-align:center;
-  outline:none;
-  appearance:none;
-  -webkit-appearance:none;
+  line-height:1;
+  user-select:none;
+  -webkit-user-select:none;
+  transition:
+    border-color .15s,
+    background .15s,
+    transform .15s;
 }
 
-input:focus{
-  border-color:#1684d1;
-  box-shadow:0 0 0 5px rgba(22,132,209,.15);
+.answer-slot.empty::after{
+  content:"";
+  width:48%;
+  height:4px;
+  border-radius:4px;
+  background:#c4cdd4;
+}
+
+.answer-slot.drag-over{
+  border-color:#ff9f1a;
+  background:#fff3ca;
+  transform:scale(1.08);
+}
+
+.answer-slot.correct-input{
+  border-color:#38a747;
+  background:#def8dc;
+}
+
+.answer-slot.wrong-input{
+  border-color:#2674c5;
+  background:#ddebff;
 }
 
 .calculation{
   position:relative;
   z-index:2;
   width:fit-content;
-  margin:4px auto 0;
-  padding:9px 15px;
+  margin:2px auto 0;
+  padding:7px 12px;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
   border:3px solid #f6c445;
   border-radius:16px;
   background:#fff9da;
-  font-size:25px;
+  font-size:22px;
   font-weight:900;
+}
+
+.calculation .answer-slot{
+  width:88px;
+  height:58px;
+  font-size:35px;
 }
 
 .ruler-home{
   position:absolute;
-  left:20px;
-  right:20px;
-  bottom:14px;
-  height:145px;
+  left:18px;
+  right:18px;
+  bottom:12px;
+  height:132px;
   border:3px dashed #a7c8dd;
   border-radius:16px;
   background:#f2faff;
 }
 
 .ruler-home-text{
-  margin:7px 0 0;
+  margin:6px 0 0;
   color:#5e7788;
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
   text-align:center;
 }
@@ -296,7 +329,7 @@ input:focus{
 .ruler{
   position:absolute;
   z-index:50;
-  height:116px;
+  height:108px;
   overflow:hidden;
   border:4px solid #296d9f;
   border-radius:7px;
@@ -332,24 +365,24 @@ input:focus{
 }
 
 .tick.mm{
-  height:25px;
+  height:23px;
 }
 
 .tick.half{
   width:2.5px;
-  height:38px;
+  height:35px;
 }
 
 .tick.cm{
   width:3px;
-  height:54px;
+  height:50px;
 }
 
 .ruler-number{
   position:absolute;
-  top:58px;
+  top:53px;
   color:#101820;
-  font-size:23px;
+  font-size:22px;
   font-weight:900;
   transform:translateX(-50%);
   pointer-events:none;
@@ -358,27 +391,111 @@ input:focus{
 .ruler-unit{
   position:absolute;
   left:42px;
-  bottom:8px;
+  bottom:7px;
   color:#145f93;
-  font-size:17px;
+  font-size:16px;
   font-weight:900;
   pointer-events:none;
 }
 
-.buttons{
+.bottom-area{
   flex:0 0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+}
+
+.keypad-wrap{
+  min-width:0;
+  padding:6px 8px 7px;
+  border:3px solid #73b7de;
+  border-radius:16px;
+  background:#fff;
+}
+
+.keypad-title{
+  margin:0 0 4px;
+  color:#245d7d;
+  font-size:16px;
+  font-weight:900;
+  text-align:center;
+}
+
+.keypad{
+  display:grid;
+  grid-template-columns:repeat(11,minmax(48px,1fr));
+  gap:6px;
+}
+
+.number-card{
+  min-width:0;
+  height:58px;
+  display:grid;
+  place-items:center;
+  border:3px solid #225f91;
+  border-radius:13px;
+  background:linear-gradient(#fff,#dff1ff);
+  color:#17212b;
+  font-size:31px;
+  font-weight:900;
+  box-shadow:0 4px 0 #9abdd5;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+.number-card.erase-card{
+  border-color:#b65d28;
+  background:linear-gradient(#fff8e5,#ffd6a3);
+  color:#8b3f15;
+  font-size:18px;
+}
+
+.number-card.dragging-source{
+  opacity:.35;
+}
+
+.drag-ghost{
+  position:fixed;
+  z-index:5000;
+  width:82px;
+  height:82px;
+  display:grid;
+  place-items:center;
+  border:5px solid #225f91;
+  border-radius:18px;
+  background:#fff;
+  color:#17212b;
+  font-size:43px;
+  font-weight:900;
+  box-shadow:0 12px 25px rgba(0,0,0,.35);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+
+.drag-ghost.erase-ghost{
+  width:105px;
+  border-color:#b65d28;
+  background:#fff2d8;
+  color:#8b3f15;
+  font-size:23px;
+}
+
+.action-area{
   display:flex;
-  justify-content:center;
-  gap:18px;
-  margin-top:7px;
+  flex-direction:column;
+  gap:7px;
 }
 
 .action-button{
-  min-width:190px;
-  min-height:52px;
-  padding:7px 20px;
+  min-width:195px;
+  min-height:55px;
+  padding:7px 18px;
   border-radius:15px;
-  font-size:22px;
+  font-size:21px;
   font-weight:900;
 }
 
@@ -394,11 +511,11 @@ input:focus{
   box-shadow:0 5px 0 #c99b00;
 }
 
-.next-button:disabled{
+.next-button:disabled,
+.check-button:disabled{
   color:#777;
   background:#ddd;
   box-shadow:0 5px 0 #aaa;
-  cursor:default;
 }
 
 .action-button:active:not(:disabled){
@@ -408,9 +525,9 @@ input:focus{
 
 .result{
   flex:0 0 auto;
-  min-height:32px;
-  margin-top:3px;
-  font-size:22px;
+  min-height:29px;
+  margin-top:2px;
+  font-size:21px;
   font-weight:900;
   text-align:center;
 }
@@ -423,20 +540,10 @@ input:focus{
   color:#176fae;
 }
 
-.correct-input{
-  border-color:#38a747!important;
-  background:#def8dc!important;
-}
-
-.wrong-input{
-  border-color:#2674c5!important;
-  background:#ddebff!important;
-}
-
 .judge-mark{
   position:fixed;
   inset:0;
-  z-index:1000;
+  z-index:6000;
   display:none;
   align-items:center;
   justify-content:center;
@@ -508,7 +615,7 @@ input:focus{
 .congratulations{
   position:fixed;
   inset:0;
-  z-index:2000;
+  z-index:7000;
   display:none;
   align-items:center;
   justify-content:center;
@@ -606,38 +713,10 @@ input:focus{
   box-shadow:0 2px 0 #c49200;
 }
 
-@media(max-width:900px){
-  .app{
-    padding:7px 8px 8px;
-  }
-
-  h1{
-    font-size:25px;
-  }
-
-  .header-right{
-    gap:6px;
-  }
-
-  .progress{
-    min-width:92px;
-    padding:7px 8px;
-    font-size:17px;
-  }
-
-  .reset-button{
-    padding:6px 9px;
-    font-size:15px;
-  }
-
-  .tape-area{
-    width:97%;
-  }
-
+@media(max-width:1050px){
   .tape-row{
-    grid-template-columns:76px minmax(150px,1fr) 230px;
+    grid-template-columns:80px minmax(180px,1fr) 220px;
     gap:7px;
-    min-height:88px;
   }
 
   .tape-label{
@@ -645,28 +724,34 @@ input:focus{
   }
 
   .answer-box{
-    gap:8px;
-    font-size:22px;
+    gap:6px;
+    font-size:20px;
   }
 
-  input{
-    width:92px;
-    height:62px;
-    font-size:35px;
+  .answer-slot{
+    width:88px;
+    height:59px;
+    font-size:34px;
   }
 
-  .calculation{
-    gap:7px;
-    padding:7px 10px;
-    font-size:21px;
+  .calculation .answer-slot{
+    width:75px;
+    height:53px;
+    font-size:31px;
   }
 
-  .ruler{
-    height:108px;
+  .keypad{
+    gap:4px;
   }
 
-  .ruler-home{
-    height:134px;
+  .number-card{
+    height:52px;
+    font-size:27px;
+  }
+
+  .action-button{
+    min-width:175px;
+    font-size:19px;
   }
 }
 </style>
@@ -678,9 +763,7 @@ input:focus{
 
   <header class="header">
 
-    <h1>
-      テープの長さをはかろう
-    </h1>
+    <h1>テープの長さをはかろう</h1>
 
     <div class="header-right">
 
@@ -704,7 +787,7 @@ input:focus{
   </header>
 
   <p class="instruction">
-    定規の0をテープの左端に合わせて、長さをはかりましょう。
+    定規ではかり、数字を答えの枠へドラッグしましょう。
   </p>
 
   <main
@@ -738,19 +821,19 @@ input:focus{
 
         </div>
 
-        <label class="answer-box">
+        <div class="answer-box">
 
-          長さ
+          <span>長さ</span>
 
-          <input
-            type="number"
-            inputmode="numeric"
+          <div
+            class="answer-slot empty"
             id="answer1"
-          >
+            data-value=""
+          ></div>
 
-          cm
+          <span>cm</span>
 
-        </label>
+        </div>
 
       </div>
 
@@ -771,19 +854,19 @@ input:focus{
 
         </div>
 
-        <label class="answer-box">
+        <div class="answer-box">
 
-          長さ
+          <span>長さ</span>
 
-          <input
-            type="number"
-            inputmode="numeric"
+          <div
+            class="answer-slot empty"
             id="answer2"
-          >
+            data-value=""
+          ></div>
 
-          cm
+          <span>cm</span>
 
-        </label>
+        </div>
 
       </div>
 
@@ -791,31 +874,31 @@ input:focus{
 
     <div class="calculation">
 
-      <input
-        type="number"
-        inputmode="numeric"
+      <div
+        class="answer-slot empty"
         id="calc1"
-      >
+        data-value=""
+      ></div>
 
       <span>cm</span>
 
       <span>＋</span>
 
-      <input
-        type="number"
-        inputmode="numeric"
+      <div
+        class="answer-slot empty"
         id="calc2"
-      >
+        data-value=""
+      ></div>
 
       <span>cm</span>
 
       <span>＝</span>
 
-      <input
-        type="number"
-        inputmode="numeric"
+      <div
+        class="answer-slot empty"
         id="total"
-      >
+        data-value=""
+      ></div>
 
       <span>cm</span>
 
@@ -844,24 +927,120 @@ input:focus{
 
   </main>
 
-  <div class="buttons">
+  <div class="bottom-area">
 
-    <button
-      type="button"
-      class="action-button check-button"
-      id="checkButton"
-    >
-      こたえあわせ
-    </button>
+    <div class="keypad-wrap">
 
-    <button
-      type="button"
-      class="action-button next-button"
-      id="nextButton"
-      disabled
-    >
-      つぎのもんだい
-    </button>
+      <p class="keypad-title">
+        数字を答えの枠へドラッグ
+      </p>
+
+      <div
+        class="keypad"
+        id="keypad"
+      >
+
+        <div
+          class="number-card"
+          data-key="0"
+        >
+          0
+        </div>
+
+        <div
+          class="number-card"
+          data-key="1"
+        >
+          1
+        </div>
+
+        <div
+          class="number-card"
+          data-key="2"
+        >
+          2
+        </div>
+
+        <div
+          class="number-card"
+          data-key="3"
+        >
+          3
+        </div>
+
+        <div
+          class="number-card"
+          data-key="4"
+        >
+          4
+        </div>
+
+        <div
+          class="number-card"
+          data-key="5"
+        >
+          5
+        </div>
+
+        <div
+          class="number-card"
+          data-key="6"
+        >
+          6
+        </div>
+
+        <div
+          class="number-card"
+          data-key="7"
+        >
+          7
+        </div>
+
+        <div
+          class="number-card"
+          data-key="8"
+        >
+          8
+        </div>
+
+        <div
+          class="number-card"
+          data-key="9"
+        >
+          9
+        </div>
+
+        <div
+          class="number-card erase-card"
+          data-key="erase"
+        >
+          けす
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="action-area">
+
+      <button
+        type="button"
+        class="action-button check-button"
+        id="checkButton"
+      >
+        こたえあわせ
+      </button>
+
+      <button
+        type="button"
+        class="action-button next-button"
+        id="nextButton"
+        disabled
+      >
+        つぎのもんだい
+      </button>
+
+    </div>
 
   </div>
 
@@ -914,11 +1093,32 @@ input:focus{
           x2="1"
           y2="1"
         >
-          <stop offset="0%" stop-color="#ff4b6e"/>
-          <stop offset="25%" stop-color="#ffbd35"/>
-          <stop offset="50%" stop-color="#55c96b"/>
-          <stop offset="75%" stop-color="#4b9fea"/>
-          <stop offset="100%" stop-color="#9c61e8"/>
+
+          <stop
+            offset="0%"
+            stop-color="#ff4b6e"
+          />
+
+          <stop
+            offset="25%"
+            stop-color="#ffbd35"
+          />
+
+          <stop
+            offset="50%"
+            stop-color="#55c96b"
+          />
+
+          <stop
+            offset="75%"
+            stop-color="#4b9fea"
+          />
+
+          <stop
+            offset="100%"
+            stop-color="#9c61e8"
+          />
+
         </linearGradient>
 
       </defs>
@@ -946,9 +1146,26 @@ input:focus{
         stroke-width="7"
       />
 
-      <circle cx="300" cy="170" r="14" fill="#ff4b6e"/>
-      <circle cx="270" cy="150" r="14" fill="#4b9fea"/>
-      <circle cx="330" cy="150" r="14" fill="#55c96b"/>
+      <circle
+        cx="300"
+        cy="170"
+        r="14"
+        fill="#ff4b6e"
+      />
+
+      <circle
+        cx="270"
+        cy="150"
+        r="14"
+        fill="#4b9fea"
+      />
+
+      <circle
+        cx="330"
+        cy="150"
+        r="14"
+        fill="#55c96b"
+      />
 
       <circle
         cx="300"
@@ -959,8 +1176,19 @@ input:focus{
         stroke-width="7"
       />
 
-      <circle cx="276" cy="244" r="7" fill="#323232"/>
-      <circle cx="324" cy="244" r="7" fill="#323232"/>
+      <circle
+        cx="276"
+        cy="244"
+        r="7"
+        fill="#323232"
+      />
+
+      <circle
+        cx="324"
+        cy="244"
+        r="7"
+        fill="#323232"
+      />
 
       <path
         d="M274 274 Q300 298 326 274"
@@ -1003,7 +1231,6 @@ input:focus{
 
 const PIXELS_PER_CM = 52;
 const RULER_LENGTH_CM = 10;
-
 const RULER_LEFT_MARGIN = 22;
 const RULER_RIGHT_MARGIN = 22;
 
@@ -1059,6 +1286,14 @@ const calc2 =
 
 const total =
   document.getElementById("total");
+
+const answerSlots = [
+  answer1,
+  answer2,
+  calc1,
+  calc2,
+  total
+];
 
 const result =
   document.getElementById("result");
@@ -1160,7 +1395,7 @@ function resetRuler(){
       8,
       main.clientHeight -
       ruler.offsetHeight -
-      23
+      20
     );
 
   ruler.style.left =
@@ -1171,20 +1406,48 @@ function resetRuler(){
 
 }
 
+function setSlotValue(
+  slot,
+  value
+){
+
+  const textValue =
+    String(value);
+
+  slot.dataset.value =
+    textValue;
+
+  slot.textContent =
+    textValue;
+
+  if(textValue === ""){
+
+    slot.classList.add("empty");
+
+  }else{
+
+    slot.classList.remove("empty");
+
+  }
+
+}
+
+function clearSlotStyle(
+  slot
+){
+
+  slot.classList.remove(
+    "correct-input",
+    "wrong-input"
+  );
+
+}
+
 function clearInputStyles(){
 
-  [
-    answer1,
-    answer2,
-    calc1,
-    calc2,
-    total
-  ].forEach(function(input){
+  answerSlots.forEach(function(slot){
 
-    input.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
+    clearSlotStyle(slot);
 
   });
 
@@ -1192,15 +1455,12 @@ function clearInputStyles(){
 
 function clearInputs(){
 
-  [
-    answer1,
-    answer2,
-    calc1,
-    calc2,
-    total
-  ].forEach(function(input){
+  answerSlots.forEach(function(slot){
 
-    input.value = "";
+    setSlotValue(
+      slot,
+      ""
+    );
 
   });
 
@@ -1230,30 +1490,17 @@ function showProblem(){
     problems.length;
 
   tape1.style.width =
-    problem.a * PIXELS_PER_CM + "px";
+    problem.a * PIXELS_PER_CM +
+    "px";
 
   tape2.style.width =
-    problem.b * PIXELS_PER_CM + "px";
+    problem.b * PIXELS_PER_CM +
+    "px";
 
   clearInputs();
-  resetRuler();
 
-}
-
-function markInput(
-  input,
-  correct
-){
-
-  input.classList.remove(
-    "correct-input",
-    "wrong-input"
-  );
-
-  input.classList.add(
-    correct
-      ? "correct-input"
-      : "wrong-input"
+  requestAnimationFrame(
+    resetRuler
   );
 
 }
@@ -1271,11 +1518,30 @@ function showJudgeMark(
 
   markElement.classList.add("show");
 
-  markTimer = setTimeout(function(){
+  markTimer =
+    setTimeout(function(){
 
-    markElement.classList.remove("show");
+      markElement.classList.remove("show");
 
-  },720);
+    },720);
+
+}
+
+function markSlot(
+  slot,
+  correct
+){
+
+  slot.classList.remove(
+    "correct-input",
+    "wrong-input"
+  );
+
+  slot.classList.add(
+    correct
+      ? "correct-input"
+      : "wrong-input"
+  );
 
 }
 
@@ -1288,28 +1554,23 @@ function checkAnswers(){
   const problem =
     problems[currentProblem];
 
-  const inputs = [
-    answer1,
-    answer2,
-    calc1,
-    calc2,
-    total
-  ];
-
   const allEntered =
-    inputs.every(function(input){
+    answerSlots.every(function(slot){
 
-      return input.value.trim() !== "";
+      return slot.dataset.value !== "";
 
     });
 
   if(!allEntered){
 
     clearInputStyles();
-    showJudgeMark(wrongMark);
+
+    showJudgeMark(
+      wrongMark
+    );
 
     result.textContent =
-      "まだ書いていないところがあります。";
+      "まだ入っていないところがあります。";
 
     result.className =
       "result wrong-message";
@@ -1319,20 +1580,20 @@ function checkAnswers(){
   }
 
   const checks = [
-    Number(answer1.value) === problem.a,
-    Number(answer2.value) === problem.b,
-    Number(calc1.value) === problem.a,
-    Number(calc2.value) === problem.b,
-    Number(total.value) === problem.a + problem.b
+    Number(answer1.dataset.value) === problem.a,
+    Number(answer2.dataset.value) === problem.b,
+    Number(calc1.dataset.value) === problem.a,
+    Number(calc2.dataset.value) === problem.b,
+    Number(total.dataset.value) === problem.a + problem.b
   ];
 
-  inputs.forEach(function(
-    input,
+  answerSlots.forEach(function(
+    slot,
     index
   ){
 
-    markInput(
-      input,
+    markSlot(
+      slot,
       checks[index]
     );
 
@@ -1342,7 +1603,9 @@ function checkAnswers(){
 
     problemCleared = true;
 
-    showJudgeMark(correctMark);
+    showJudgeMark(
+      correctMark
+    );
 
     result.textContent =
       "せいかい！ じょうずにはかれました！";
@@ -1375,7 +1638,9 @@ function checkAnswers(){
 
   }else{
 
-    showJudgeMark(wrongMark);
+    showJudgeMark(
+      wrongMark
+    );
 
     result.textContent =
       "青いところを、もういちど見なおしましょう。";
@@ -1432,93 +1697,347 @@ function clearResultAfterInput(){
 
 }
 
-answer1.addEventListener(
-  "input",
-  function(){
+function getSlotAtPoint(
+  clientX,
+  clientY
+){
 
-    if(!problemCleared){
+  for(
+    const slot of answerSlots
+  ){
 
-      calc1.value =
-        answer1.value;
+    const rect =
+      slot.getBoundingClientRect();
 
-      answer1.classList.remove(
-        "correct-input",
-        "wrong-input"
-      );
+    if(
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom
+    ){
 
-      calc1.classList.remove(
-        "correct-input",
-        "wrong-input"
-      );
-
-      clearResultAfterInput();
-
-    }
-
-  }
-);
-
-answer2.addEventListener(
-  "input",
-  function(){
-
-    if(!problemCleared){
-
-      calc2.value =
-        answer2.value;
-
-      answer2.classList.remove(
-        "correct-input",
-        "wrong-input"
-      );
-
-      calc2.classList.remove(
-        "correct-input",
-        "wrong-input"
-      );
-
-      clearResultAfterInput();
+      return slot;
 
     }
 
   }
-);
 
-[
-  calc1,
-  calc2,
-  total
-].forEach(function(input){
+  return null;
 
-  input.addEventListener(
-    "input",
-    function(){
+}
 
-      if(!problemCleared){
+function removeDragOver(){
 
-        input.classList.remove(
-          "correct-input",
-          "wrong-input"
-        );
+  answerSlots.forEach(function(slot){
 
-        clearResultAfterInput();
+    slot.classList.remove(
+      "drag-over"
+    );
+
+  });
+
+}
+
+let keypadDragging = false;
+let draggedKey = "";
+let dragSource = null;
+let dragGhost = null;
+let keypadPointerId = null;
+
+function createDragGhost(
+  key
+){
+
+  const ghost =
+    document.createElement("div");
+
+  ghost.className =
+    "drag-ghost";
+
+  if(key === "erase"){
+
+    ghost.classList.add(
+      "erase-ghost"
+    );
+
+    ghost.textContent =
+      "けす";
+
+  }else{
+
+    ghost.textContent =
+      key;
+
+  }
+
+  document.body.appendChild(
+    ghost
+  );
+
+  return ghost;
+
+}
+
+function moveDragGhost(
+  clientX,
+  clientY
+){
+
+  if(!dragGhost){
+    return;
+  }
+
+  dragGhost.style.left =
+    clientX + "px";
+
+  dragGhost.style.top =
+    clientY + "px";
+
+  removeDragOver();
+
+  const target =
+    getSlotAtPoint(
+      clientX,
+      clientY
+    );
+
+  if(target){
+
+    target.classList.add(
+      "drag-over"
+    );
+
+  }
+
+}
+
+function finishKeypadDrag(
+  clientX,
+  clientY
+){
+
+  if(!keypadDragging){
+    return;
+  }
+
+  const target =
+    getSlotAtPoint(
+      clientX,
+      clientY
+    );
+
+  if(
+    target &&
+    !problemCleared
+  ){
+
+    clearSlotStyle(
+      target
+    );
+
+    if(draggedKey === "erase"){
+
+      setSlotValue(
+        target,
+        ""
+      );
+
+    }else{
+
+      const currentValue =
+        target.dataset.value || "";
+
+      let nextValue;
+
+      if(
+        currentValue === "" ||
+        currentValue.length >= 2
+      ){
+
+        nextValue =
+          draggedKey;
+
+      }else{
+
+        nextValue =
+          currentValue +
+          draggedKey;
 
       }
 
+      if(
+        nextValue.length > 1 &&
+        nextValue.startsWith("0")
+      ){
+
+        nextValue =
+          String(
+            Number(nextValue)
+          );
+
+      }
+
+      setSlotValue(
+        target,
+        nextValue
+      );
+
     }
-  );
 
-});
+    clearResultAfterInput();
 
-let dragging = false;
-let offsetX = 0;
-let offsetY = 0;
+  }
+
+  removeDragOver();
+
+  if(dragGhost){
+
+    dragGhost.remove();
+    dragGhost = null;
+
+  }
+
+  if(dragSource){
+
+    dragSource.classList.remove(
+      "dragging-source"
+    );
+
+  }
+
+  keypadDragging = false;
+  draggedKey = "";
+  dragSource = null;
+  keypadPointerId = null;
+
+}
+
+document
+  .querySelectorAll(".number-card")
+  .forEach(function(card){
+
+    card.addEventListener(
+      "pointerdown",
+      function(event){
+
+        if(problemCleared){
+          return;
+        }
+
+        keypadDragging = true;
+
+        draggedKey =
+          card.dataset.key;
+
+        dragSource =
+          card;
+
+        keypadPointerId =
+          event.pointerId;
+
+        card.classList.add(
+          "dragging-source"
+        );
+
+        dragGhost =
+          createDragGhost(
+            draggedKey
+          );
+
+        moveDragGhost(
+          event.clientX,
+          event.clientY
+        );
+
+        try{
+
+          card.setPointerCapture(
+            event.pointerId
+          );
+
+        }catch(error){
+        }
+
+        event.preventDefault();
+
+      }
+    );
+
+    card.addEventListener(
+      "pointermove",
+      function(event){
+
+        if(
+          !keypadDragging ||
+          event.pointerId !==
+          keypadPointerId
+        ){
+          return;
+        }
+
+        moveDragGhost(
+          event.clientX,
+          event.clientY
+        );
+
+        event.preventDefault();
+
+      }
+    );
+
+    card.addEventListener(
+      "pointerup",
+      function(event){
+
+        if(
+          event.pointerId !==
+          keypadPointerId
+        ){
+          return;
+        }
+
+        finishKeypadDrag(
+          event.clientX,
+          event.clientY
+        );
+
+        try{
+
+          card.releasePointerCapture(
+            event.pointerId
+          );
+
+        }catch(error){
+        }
+
+        event.preventDefault();
+
+      }
+    );
+
+    card.addEventListener(
+      "pointercancel",
+      function(event){
+
+        finishKeypadDrag(
+          event.clientX,
+          event.clientY
+        );
+
+      }
+    );
+
+  });
+
+let rulerDragging = false;
+let rulerOffsetX = 0;
+let rulerOffsetY = 0;
 
 ruler.addEventListener(
   "pointerdown",
   function(event){
 
-    dragging = true;
+    rulerDragging = true;
 
     ruler.classList.add(
       "dragging"
@@ -1527,11 +2046,13 @@ ruler.addEventListener(
     const rect =
       ruler.getBoundingClientRect();
 
-    offsetX =
-      event.clientX - rect.left;
+    rulerOffsetX =
+      event.clientX -
+      rect.left;
 
-    offsetY =
-      event.clientY - rect.top;
+    rulerOffsetY =
+      event.clientY -
+      rect.top;
 
     try{
 
@@ -1551,7 +2072,7 @@ ruler.addEventListener(
   "pointermove",
   function(event){
 
-    if(!dragging){
+    if(!rulerDragging){
       return;
     }
 
@@ -1561,12 +2082,12 @@ ruler.addEventListener(
     let left =
       event.clientX -
       mainRect.left -
-      offsetX;
+      rulerOffsetX;
 
     let top =
       event.clientY -
       mainRect.top -
-      offsetY;
+      rulerOffsetY;
 
     const maxLeft =
       Math.max(
@@ -1585,13 +2106,19 @@ ruler.addEventListener(
     left =
       Math.max(
         0,
-        Math.min(maxLeft,left)
+        Math.min(
+          maxLeft,
+          left
+        )
       );
 
     top =
       Math.max(
         0,
-        Math.min(maxTop,top)
+        Math.min(
+          maxTop,
+          top
+        )
       );
 
     ruler.style.left =
@@ -1605,15 +2132,15 @@ ruler.addEventListener(
   }
 );
 
-function stopDragging(
+function stopRulerDragging(
   event
 ){
 
-  if(!dragging){
+  if(!rulerDragging){
     return;
   }
 
-  dragging = false;
+  rulerDragging = false;
 
   ruler.classList.remove(
     "dragging"
@@ -1632,12 +2159,12 @@ function stopDragging(
 
 ruler.addEventListener(
   "pointerup",
-  stopDragging
+  stopRulerDragging
 );
 
 ruler.addEventListener(
   "pointercancel",
-  stopDragging
+  stopRulerDragging
 );
 
 resetRulerButton.addEventListener(
