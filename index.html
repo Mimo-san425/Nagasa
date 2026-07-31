@@ -285,6 +285,15 @@ h1{
   background:#ddebff;
 }
 
+.answer-slot.auto-slot{
+  border-color:#8196a5;
+  background:#eef4f7;
+}
+
+.answer-slot.auto-slot.empty::after{
+  background:#aebcc6;
+}
+
 .calculation{
   position:relative;
   z-index:2;
@@ -875,7 +884,7 @@ h1{
     <div class="calculation">
 
       <div
-        class="answer-slot empty"
+        class="answer-slot auto-slot empty"
         id="calc1"
         data-value=""
       ></div>
@@ -885,7 +894,7 @@ h1{
       <span>＋</span>
 
       <div
-        class="answer-slot empty"
+        class="answer-slot auto-slot empty"
         id="calc2"
         data-value=""
       ></div>
@@ -940,75 +949,16 @@ h1{
         id="keypad"
       >
 
-        <div
-          class="number-card"
-          data-key="0"
-        >
-          0
-        </div>
-
-        <div
-          class="number-card"
-          data-key="1"
-        >
-          1
-        </div>
-
-        <div
-          class="number-card"
-          data-key="2"
-        >
-          2
-        </div>
-
-        <div
-          class="number-card"
-          data-key="3"
-        >
-          3
-        </div>
-
-        <div
-          class="number-card"
-          data-key="4"
-        >
-          4
-        </div>
-
-        <div
-          class="number-card"
-          data-key="5"
-        >
-          5
-        </div>
-
-        <div
-          class="number-card"
-          data-key="6"
-        >
-          6
-        </div>
-
-        <div
-          class="number-card"
-          data-key="7"
-        >
-          7
-        </div>
-
-        <div
-          class="number-card"
-          data-key="8"
-        >
-          8
-        </div>
-
-        <div
-          class="number-card"
-          data-key="9"
-        >
-          9
-        </div>
+        <div class="number-card" data-key="0">0</div>
+        <div class="number-card" data-key="1">1</div>
+        <div class="number-card" data-key="2">2</div>
+        <div class="number-card" data-key="3">3</div>
+        <div class="number-card" data-key="4">4</div>
+        <div class="number-card" data-key="5">5</div>
+        <div class="number-card" data-key="6">6</div>
+        <div class="number-card" data-key="7">7</div>
+        <div class="number-card" data-key="8">8</div>
+        <div class="number-card" data-key="9">9</div>
 
         <div
           class="number-card erase-card"
@@ -1094,30 +1044,11 @@ h1{
           y2="1"
         >
 
-          <stop
-            offset="0%"
-            stop-color="#ff4b6e"
-          />
-
-          <stop
-            offset="25%"
-            stop-color="#ffbd35"
-          />
-
-          <stop
-            offset="50%"
-            stop-color="#55c96b"
-          />
-
-          <stop
-            offset="75%"
-            stop-color="#4b9fea"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#9c61e8"
-          />
+          <stop offset="0%" stop-color="#ff4b6e"/>
+          <stop offset="25%" stop-color="#ffbd35"/>
+          <stop offset="50%" stop-color="#55c96b"/>
+          <stop offset="75%" stop-color="#4b9fea"/>
+          <stop offset="100%" stop-color="#9c61e8"/>
 
         </linearGradient>
 
@@ -1146,26 +1077,9 @@ h1{
         stroke-width="7"
       />
 
-      <circle
-        cx="300"
-        cy="170"
-        r="14"
-        fill="#ff4b6e"
-      />
-
-      <circle
-        cx="270"
-        cy="150"
-        r="14"
-        fill="#4b9fea"
-      />
-
-      <circle
-        cx="330"
-        cy="150"
-        r="14"
-        fill="#55c96b"
-      />
+      <circle cx="300" cy="170" r="14" fill="#ff4b6e"/>
+      <circle cx="270" cy="150" r="14" fill="#4b9fea"/>
+      <circle cx="330" cy="150" r="14" fill="#55c96b"/>
 
       <circle
         cx="300"
@@ -1176,19 +1090,8 @@ h1{
         stroke-width="7"
       />
 
-      <circle
-        cx="276"
-        cy="244"
-        r="7"
-        fill="#323232"
-      />
-
-      <circle
-        cx="324"
-        cy="244"
-        r="7"
-        fill="#323232"
-      />
+      <circle cx="276" cy="244" r="7" fill="#323232"/>
+      <circle cx="324" cy="244" r="7" fill="#323232"/>
 
       <path
         d="M274 274 Q300 298 326 274"
@@ -1292,6 +1195,12 @@ const answerSlots = [
   answer2,
   calc1,
   calc2,
+  total
+];
+
+const draggableAnswerSlots = [
+  answer1,
+  answer2,
   total
 ];
 
@@ -1406,6 +1315,34 @@ function resetRuler(){
 
 }
 
+function setCalculationValue(
+  slot,
+  value
+){
+
+  const textValue =
+    String(value);
+
+  slot.dataset.value =
+    textValue;
+
+  slot.textContent =
+    textValue;
+
+  if(textValue === ""){
+
+    slot.classList.add("empty");
+
+  }else{
+
+    slot.classList.remove("empty");
+
+  }
+
+  clearSlotStyle(slot);
+
+}
+
 function setSlotValue(
   slot,
   value
@@ -1427,6 +1364,24 @@ function setSlotValue(
   }else{
 
     slot.classList.remove("empty");
+
+  }
+
+  if(slot === answer1){
+
+    setCalculationValue(
+      calc1,
+      textValue
+    );
+
+  }
+
+  if(slot === answer2){
+
+    setCalculationValue(
+      calc2,
+      textValue
+    );
 
   }
 
@@ -1457,10 +1412,9 @@ function clearInputs(){
 
   answerSlots.forEach(function(slot){
 
-    setSlotValue(
-      slot,
-      ""
-    );
+    slot.dataset.value = "";
+    slot.textContent = "";
+    slot.classList.add("empty");
 
   });
 
@@ -1482,7 +1436,8 @@ function showProblem(){
     problems[currentProblem];
 
   problemNumber.textContent =
-    currentProblem + 1 + "もんめ";
+    currentProblem + 1 +
+    "もんめ";
 
   progress.textContent =
     currentProblem + 1 +
@@ -1490,11 +1445,13 @@ function showProblem(){
     problems.length;
 
   tape1.style.width =
-    problem.a * PIXELS_PER_CM +
+    problem.a *
+    PIXELS_PER_CM +
     "px";
 
   tape2.style.width =
-    problem.b * PIXELS_PER_CM +
+    problem.b *
+    PIXELS_PER_CM +
     "px";
 
   clearInputs();
@@ -1703,7 +1660,7 @@ function getSlotAtPoint(
 ){
 
   for(
-    const slot of answerSlots
+    const slot of draggableAnswerSlots
   ){
 
     const rect =
@@ -1728,7 +1685,7 @@ function getSlotAtPoint(
 
 function removeDragOver(){
 
-  answerSlots.forEach(function(slot){
+  draggableAnswerSlots.forEach(function(slot){
 
     slot.classList.remove(
       "drag-over"
