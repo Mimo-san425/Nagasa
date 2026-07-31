@@ -2,607 +2,669 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>テープの長さをはかろう</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  overscroll-behavior: none;
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  overscroll-behavior:none;
 }
 
-body {
-  background: #eaf5ff;
-  color: #16202a;
-  font-family:
-    "UD デジタル 教科書体 N-R",
-    "Hiragino Sans",
-    "Yu Gothic",
-    sans-serif;
-  touch-action: manipulation;
+body{
+  background:#eaf6ff;
+  color:#17212b;
+  font-family:"UD デジタル 教科書体 N-R","Hiragino Sans","Yu Gothic",sans-serif;
+  touch-action:manipulation;
 }
 
-button,
-input {
-  font: inherit;
+button,input{
+  font:inherit;
 }
 
-button {
-  touch-action: manipulation;
+button{
+  border:none;
+  cursor:pointer;
+  touch-action:manipulation;
 }
 
-.app {
-  width: 100%;
-  min-height: 100vh;
-  padding: 18px 22px 24px;
+.app{
+  width:100%;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  padding:8px 12px 10px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 14px;
+.header{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:6px;
 }
 
-.title {
-  margin: 0;
-  font-size: clamp(28px, 3.2vw, 42px);
-  line-height: 1.25;
-  color: #135f9c;
+h1{
+  margin:0;
+  color:#176aab;
+  font-size:clamp(26px,3vw,39px);
 }
 
-.header-buttons {
-  display: flex;
-  gap: 12px;
-  flex-shrink: 0;
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.small-button {
-  min-height: 54px;
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 14px;
-  background: #fff;
-  color: #135f9c;
-  font-size: 20px;
-  font-weight: 800;
-  box-shadow: 0 4px 0 #b8d6eb;
+.progress{
+  min-width:112px;
+  padding:8px 13px;
+  border:3px solid #60a9d8;
+  border-radius:14px;
+  background:#fff;
+  color:#175f96;
+  font-size:20px;
+  font-weight:900;
+  text-align:center;
 }
 
-.small-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #b8d6eb;
+.reset-button{
+  min-height:46px;
+  padding:7px 15px;
+  border-radius:14px;
+  background:#fff;
+  color:#176aab;
+  font-size:17px;
+  font-weight:900;
+  box-shadow:0 4px 0 #b5d5e8;
 }
 
-.instruction {
-  margin: 0 0 14px;
-  padding: 12px 18px;
-  border-radius: 15px;
-  background: #fff;
-  font-size: clamp(20px, 2.2vw, 28px);
-  font-weight: 800;
-  text-align: center;
-  box-shadow: 0 3px 10px rgba(36, 91, 130, 0.12);
+.reset-button:active{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 #b5d5e8;
 }
 
-.main-area {
-  position: relative;
-  width: 100%;
-  min-height: 540px;
-  padding: 18px;
-  border: 4px solid #7bbce8;
-  border-radius: 22px;
-  background: #fff;
-  overflow: hidden;
+.instruction{
+  flex:0 0 auto;
+  margin:0 0 6px;
+  padding:7px 14px;
+  border-radius:14px;
+  background:#fff;
+  font-size:clamp(17px,1.9vw,23px);
+  font-weight:900;
+  text-align:center;
 }
 
-.problem-number {
-  position: absolute;
-  top: 15px;
-  left: 18px;
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border: 4px solid #17202a;
-  border-radius: 50%;
-  background: #fff;
-  font-size: 30px;
-  font-weight: 900;
+.main{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+  border:4px solid #78bce8;
+  border-radius:20px;
+  background:#fff;
 }
 
-.tape-zone {
-  width: min(1000px, 88%);
-  margin: 54px auto 0;
+.problem-number{
+  position:absolute;
+  top:9px;
+  left:11px;
+  z-index:5;
+  min-width:65px;
+  height:48px;
+  padding:0 10px;
+  display:grid;
+  place-items:center;
+  border:4px solid #17212b;
+  border-radius:24px;
+  background:#fff;
+  font-size:23px;
+  font-weight:900;
 }
 
-.tape-row {
-  display: grid;
-  grid-template-columns: 120px minmax(180px, 1fr) 245px;
-  align-items: center;
-  gap: 22px;
-  min-height: 106px;
-  margin-bottom: 12px;
+.tape-area{
+  position:relative;
+  z-index:2;
+  width:min(1050px,94%);
+  margin:54px auto 0;
 }
 
-.tape-name {
-  font-size: 27px;
-  font-weight: 900;
-  text-align: center;
+.tape-row{
+  display:grid;
+  grid-template-columns:105px minmax(250px,1fr) 205px;
+  align-items:center;
+  gap:14px;
+  min-height:82px;
 }
 
-.tape-track {
-  position: relative;
-  height: 74px;
-  display: flex;
-  align-items: center;
-  padding-left: 4px;
-  border-left: 4px dashed #8ba3b5;
+.tape-label{
+  font-size:21px;
+  font-weight:900;
+  text-align:center;
 }
 
-.tape {
-  position: relative;
-  height: 58px;
-  border: 3px solid;
-  border-radius: 3px;
-  box-shadow: 0 4px 8px rgba(0,0,0,.12);
+.tape-track{
+  position:relative;
+  height:66px;
+  display:flex;
+  align-items:center;
+}
+
+.start-line{
+  position:absolute;
+  left:0;
+  top:4px;
+  width:4px;
+  height:58px;
+  background:#273b49;
+}
+
+.tape{
+  position:relative;
+  height:46px;
+  border:3px solid;
+  box-shadow:0 4px 8px rgba(0,0,0,.15);
 }
 
 .tape::before,
-.tape::after {
-  content: "";
-  position: absolute;
-  top: -3px;
-  width: 10px;
-  height: calc(100% + 6px);
+.tape::after{
+  content:"";
+  position:absolute;
+  top:-3px;
+  width:8px;
+  height:calc(100% + 6px);
   background:
     linear-gradient(
       135deg,
-      transparent 0 22%,
-      currentColor 23% 32%,
-      transparent 33% 48%,
-      currentColor 49% 58%,
+      transparent 0 20%,
+      currentColor 21% 31%,
+      transparent 32% 47%,
+      currentColor 48% 58%,
       transparent 59% 74%,
-      currentColor 75% 84%,
-      transparent 85%
+      currentColor 75% 85%,
+      transparent 86%
     );
 }
 
-.tape::before {
-  left: -7px;
+.tape::before{
+  left:-6px;
 }
 
-.tape::after {
-  right: -7px;
-  transform: scaleX(-1);
+.tape::after{
+  right:-6px;
+  transform:scaleX(-1);
 }
 
-.tape-a {
-  color: #e94d87;
-  border-color: #e94d87;
-  background-color: #ff9fc1;
-  background-image:
+.tape1{
+  color:#d83d73;
+  border-color:#d83d73;
+  background:
     radial-gradient(
       circle,
-      rgba(255,255,255,.9) 0 4px,
+      rgba(255,255,255,.85) 0 4px,
       transparent 5px
-    );
-  background-size: 28px 28px;
+    ),
+    #ff9fc0;
+  background-size:28px 28px;
 }
 
-.tape-b {
-  color: #1995d3;
-  border-color: #1995d3;
-  background-color: #84d7fb;
-  background-image:
+.tape2{
+  color:#168ac8;
+  border-color:#168ac8;
+  background:
     repeating-linear-gradient(
       135deg,
-      rgba(255,255,255,.38) 0 8px,
+      rgba(255,255,255,.45) 0 8px,
       transparent 8px 18px
-    );
+    ),
+    #83d8fa;
 }
 
-.measure-input-area {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 9px;
-  font-size: 24px;
-  font-weight: 800;
+.answer-box{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  font-size:19px;
+  font-weight:900;
 }
 
-.number-input {
-  width: 105px;
-  height: 64px;
-  border: 4px solid #263746;
-  border-radius: 13px;
-  background: #fff;
-  color: #111;
-  font-size: 36px;
-  font-weight: 900;
-  text-align: center;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
+input{
+  width:72px;
+  height:49px;
+  border:4px solid #283a48;
+  border-radius:12px;
+  background:#fff;
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+  outline:none;
+  appearance:none;
+  -webkit-appearance:none;
 }
 
-.number-input:focus {
-  border-color: #147bc1;
-  box-shadow: 0 0 0 5px rgba(20,123,193,.15);
+input:focus{
+  border-color:#1684d1;
+  box-shadow:0 0 0 5px rgba(22,132,209,.15);
 }
 
-.calculation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 14px auto 8px;
-  padding: 14px 18px;
-  border: 3px solid #ffc949;
-  border-radius: 18px;
-  background: #fff9d9;
-  font-size: clamp(25px, 2.8vw, 36px);
-  font-weight: 900;
+.calculation{
+  position:relative;
+  z-index:2;
+  width:fit-content;
+  margin:4px auto 0;
+  padding:7px 13px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:3px solid #f6c445;
+  border-radius:16px;
+  background:#fff9da;
+  font-size:23px;
+  font-weight:900;
 }
 
-.calc-input {
-  width: 105px;
-  height: 66px;
-  border: 4px solid #263746;
-  border-radius: 13px;
-  background: #fff;
-  font-size: 36px;
-  font-weight: 900;
-  text-align: center;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
+.ruler-home{
+  position:absolute;
+  left:20px;
+  right:20px;
+  bottom:14px;
+  height:145px;
+  border:3px dashed #a7c8dd;
+  border-radius:16px;
+  background:#f2faff;
 }
 
-.calc-input:focus {
-  border-color: #e09900;
-  box-shadow: 0 0 0 5px rgba(255,180,0,.18);
+.ruler-home-text{
+  margin:7px 0 0;
+  color:#5e7788;
+  font-size:17px;
+  font-weight:900;
+  text-align:center;
 }
 
-.ruler-area {
-  position: relative;
-  height: 170px;
-  margin-top: 12px;
-  border-top: 3px dashed #b6c7d4;
-}
-
-.ruler-help {
-  position: absolute;
-  top: 8px;
-  left: 0;
-  width: 100%;
-  margin: 0;
-  color: #496476;
-  font-size: 20px;
-  font-weight: 800;
-  text-align: center;
-  pointer-events: none;
-}
-
-.ruler {
-  position: absolute;
-  left: 90px;
-  top: 48px;
-  height: 104px;
-  border: 4px solid #176fb0;
-  border-radius: 12px;
+.ruler{
+  position:absolute;
+  z-index:50;
+  height:116px;
+  overflow:hidden;
+  border:4px solid #296d9f;
+  border-radius:7px;
   background:
     linear-gradient(
       to bottom,
-      rgba(255,255,255,.75),
-      rgba(162,218,255,.72)
+      rgba(232,249,255,.86),
+      rgba(168,218,245,.70)
     );
-  box-shadow: 0 7px 13px rgba(0,0,0,.17);
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  cursor: grab;
-  overflow: hidden;
-  z-index: 20;
+  box-shadow:
+    0 9px 18px rgba(0,0,0,.27),
+    inset 0 0 0 2px rgba(255,255,255,.75);
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
 }
 
-.ruler.dragging {
-  cursor: grabbing;
-  box-shadow: 0 10px 20px rgba(0,0,0,.28);
+.ruler.dragging{
+  cursor:grabbing;
+  box-shadow:
+    0 13px 25px rgba(0,0,0,.34),
+    inset 0 0 0 2px rgba(255,255,255,.75);
 }
 
-.ruler-scale {
-  position: relative;
-  height: 100%;
+.tick{
+  position:absolute;
+  top:0;
+  width:2px;
+  background:#111820;
+  transform:translateX(-50%);
+  pointer-events:none;
 }
 
-.tick {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  background: #101820;
-  transform: translateX(-1px);
-  pointer-events: none;
+.tick.mm{
+  height:25px;
 }
 
-.tick.small {
-  height: 26px;
+.tick.half{
+  width:2.5px;
+  height:38px;
 }
 
-.tick.middle {
-  height: 38px;
+.tick.cm{
+  width:3px;
+  height:54px;
 }
 
-.tick.large {
-  width: 3px;
-  height: 53px;
-  transform: translateX(-1.5px);
+.ruler-number{
+  position:absolute;
+  top:58px;
+  color:#101820;
+  font-size:23px;
+  font-weight:900;
+  transform:translateX(-50%);
+  pointer-events:none;
 }
 
-.ruler-number {
-  position: absolute;
-  top: 53px;
-  transform: translateX(-50%);
-  font-size: 22px;
-  font-weight: 900;
-  pointer-events: none;
+.ruler-unit{
+  position:absolute;
+  left:42px;
+  bottom:8px;
+  color:#145f93;
+  font-size:17px;
+  font-weight:900;
+  pointer-events:none;
 }
 
-.ruler-cm {
-  position: absolute;
-  left: 12px;
-  bottom: 7px;
-  color: #135f9c;
-  font-size: 18px;
-  font-weight: 900;
-  pointer-events: none;
+.buttons{
+  flex:0 0 auto;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-top:7px;
 }
 
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin-top: 16px;
+.action-button{
+  min-width:190px;
+  min-height:52px;
+  padding:7px 20px;
+  border-radius:15px;
+  font-size:22px;
+  font-weight:900;
 }
 
-.action-button {
-  min-width: 200px;
-  min-height: 64px;
-  padding: 10px 24px;
-  border: 0;
-  border-radius: 17px;
-  font-size: 27px;
-  font-weight: 900;
+.check-button{
+  color:#fff;
+  background:#1686d3;
+  box-shadow:0 5px 0 #0b5d97;
 }
 
-.check-button {
-  color: #fff;
-  background: #1686d3;
-  box-shadow: 0 6px 0 #0b5b94;
+.next-button{
+  color:#352700;
+  background:#ffd34f;
+  box-shadow:0 5px 0 #c99b00;
 }
 
-.next-button {
-  color: #2d2100;
-  background: #ffd24e;
-  box-shadow: 0 6px 0 #c89a00;
+.next-button:disabled{
+  color:#777;
+  background:#ddd;
+  box-shadow:0 5px 0 #aaa;
+  cursor:default;
 }
 
-.action-button:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 rgba(0,0,0,.28);
+.action-button:active:not(:disabled){
+  transform:translateY(3px);
+  box-shadow:0 2px 0 rgba(0,0,0,.25);
 }
 
-.result {
-  min-height: 52px;
-  margin-top: 12px;
-  font-size: 30px;
-  font-weight: 900;
-  text-align: center;
+.result{
+  flex:0 0 auto;
+  min-height:32px;
+  margin-top:3px;
+  font-size:22px;
+  font-weight:900;
+  text-align:center;
 }
 
-.correct-message {
-  color: #d92765;
+.correct-message{
+  color:#df285d;
 }
 
-.error-message {
-  color: #176fb0;
+.wrong-message{
+  color:#176fae;
 }
 
-.correct-input {
-  background: #dff8dc !important;
-  border-color: #3aa846 !important;
+.correct-input{
+  border-color:#38a747!important;
+  background:#def8dc!important;
 }
 
-.wrong-input {
-  background: #ffe0e6 !important;
-  border-color: #e33b62 !important;
+.wrong-input{
+  border-color:#2674c5!important;
+  background:#ddebff!important;
 }
 
-.calibration-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-  background: rgba(20, 42, 58, .72);
+.judge-mark{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
 }
 
-.calibration-screen.show {
-  display: flex;
+.judge-mark.show{
+  display:flex;
+  animation:judgePop .7s ease forwards;
 }
 
-.calibration-box {
-  width: min(760px, 96vw);
-  padding: 26px;
-  border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 15px 45px rgba(0,0,0,.32);
-  text-align: center;
+.circle-mark{
+  width:min(42vw,330px);
+  aspect-ratio:1;
+  border:clamp(24px,4vw,42px) solid #e62246;
+  border-radius:50%;
+  filter:drop-shadow(0 8px 5px rgba(0,0,0,.25));
 }
 
-.calibration-box h2 {
-  margin: 0 0 14px;
-  color: #135f9c;
-  font-size: 34px;
+.cross-mark{
+  position:relative;
+  width:min(42vw,330px);
+  aspect-ratio:1;
+  filter:drop-shadow(0 8px 5px rgba(0,0,0,.25));
 }
 
-.calibration-box p {
-  margin: 8px 0;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.6;
+.cross-mark::before,
+.cross-mark::after{
+  content:"";
+  position:absolute;
+  left:45%;
+  top:0;
+  width:11%;
+  height:100%;
+  border-radius:18px;
+  background:#1976d2;
 }
 
-.calibration-line-wrap {
-  max-width: 100%;
-  margin: 25px auto 18px;
-  overflow-x: auto;
-  padding: 12px 0;
+.cross-mark::before{
+  transform:rotate(45deg);
 }
 
-.calibration-line {
-  position: relative;
-  height: 28px;
-  margin: 0 auto;
-  border-top: 7px solid #e64545;
+.cross-mark::after{
+  transform:rotate(-45deg);
 }
 
-.calibration-line::before,
-.calibration-line::after {
-  content: "";
-  position: absolute;
-  top: -16px;
-  width: 7px;
-  height: 26px;
-  background: #e64545;
-}
-
-.calibration-line::before {
-  left: 0;
-}
-
-.calibration-line::after {
-  right: 0;
-}
-
-.calibration-label {
-  margin-top: 8px;
-  color: #d52e2e;
-  font-size: 27px;
-  font-weight: 900;
-}
-
-.calibration-slider {
-  width: min(600px, 90%);
-  height: 40px;
-}
-
-.calibration-value {
-  margin: 8px 0 15px;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.calibration-button {
-  min-width: 210px;
-  min-height: 62px;
-  border: 0;
-  border-radius: 16px;
-  color: #fff;
-  background: #1686d3;
-  font-size: 27px;
-  font-weight: 900;
-  box-shadow: 0 6px 0 #0b5b94;
-}
-
-@media (orientation: portrait) {
-  .header {
-    align-items: flex-start;
+@keyframes judgePop{
+  0%{
+    opacity:0;
+    transform:scale(.4);
   }
 
-  .tape-row {
-    grid-template-columns: 90px minmax(160px, 1fr);
+  30%{
+    opacity:1;
+    transform:scale(1.12);
   }
 
-  .measure-input-area {
-    grid-column: 1 / -1;
-    justify-content: center;
+  75%{
+    opacity:1;
+    transform:scale(1);
   }
 
-  .main-area {
-    min-height: 760px;
-  }
-
-  .calculation {
-    flex-wrap: wrap;
+  100%{
+    opacity:0;
+    transform:scale(1);
   }
 }
 
-@media (max-width: 850px) {
-  .app {
-    padding: 12px;
+.congratulations{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,.96),
+      rgba(255,241,160,.97)
+    );
+}
+
+.congratulations.show{
+  display:flex;
+}
+
+.congratulations-card{
+  position:relative;
+  width:min(820px,94vw);
+  max-height:92vh;
+  overflow:hidden;
+  padding:24px 28px 28px;
+  border:8px solid #ffbd24;
+  border-radius:34px;
+  background:#fff;
+  box-shadow:0 16px 35px rgba(0,0,0,.28);
+  text-align:center;
+}
+
+.congratulations-card::before,
+.congratulations-card::after{
+  content:"★　★　★";
+  position:absolute;
+  color:#ffcf33;
+  font-size:34px;
+  letter-spacing:12px;
+}
+
+.congratulations-card::before{
+  top:15px;
+  left:25px;
+  transform:rotate(-12deg);
+}
+
+.congratulations-card::after{
+  right:25px;
+  bottom:20px;
+  transform:rotate(12deg);
+}
+
+.congratulations-title{
+  position:relative;
+  z-index:2;
+  margin:0;
+  color:#e83268;
+  font-size:clamp(45px,8vw,82px);
+  line-height:1.15;
+  text-shadow:
+    3px 3px 0 #fff,
+    6px 6px 0 #ffd154;
+}
+
+.congratulations-picture{
+  position:relative;
+  z-index:2;
+  width:min(430px,70vw);
+  margin:8px auto 5px;
+}
+
+.congratulations-message{
+  position:relative;
+  z-index:2;
+  margin:0 0 17px;
+  color:#176aab;
+  font-size:clamp(24px,4vw,38px);
+  font-weight:900;
+}
+
+.restart-button{
+  position:relative;
+  z-index:3;
+  min-width:220px;
+  min-height:58px;
+  padding:10px 24px;
+  border-radius:18px;
+  background:#ffcf42;
+  color:#3a2a00;
+  font-size:24px;
+  font-weight:900;
+  box-shadow:0 6px 0 #c49200;
+}
+
+.restart-button:active{
+  transform:translateY(4px);
+  box-shadow:0 2px 0 #c49200;
+}
+
+@media(max-width:900px){
+  .app{
+    padding:7px 8px 8px;
   }
 
-  .header {
-    gap: 8px;
+  h1{
+    font-size:25px;
   }
 
-  .header-buttons {
-    gap: 7px;
+  .header-right{
+    gap:6px;
   }
 
-  .small-button {
-    min-height: 48px;
-    padding: 7px 11px;
-    font-size: 17px;
+  .progress{
+    min-width:92px;
+    padding:7px 8px;
+    font-size:17px;
   }
 
-  .main-area {
-    padding: 12px;
+  .reset-button{
+    padding:6px 9px;
+    font-size:15px;
   }
 
-  .tape-zone {
-    width: 95%;
+  .tape-area{
+    width:96%;
   }
 
-  .tape-row {
-    grid-template-columns: 90px minmax(170px, 1fr) 210px;
-    gap: 12px;
+  .tape-row{
+    grid-template-columns:80px minmax(180px,1fr) 170px;
+    gap:7px;
+    min-height:76px;
   }
 
-  .tape-name {
-    font-size: 23px;
+  .tape-label{
+    font-size:17px;
   }
 
-  .measure-input-area {
-    font-size: 21px;
+  .answer-box{
+    font-size:16px;
   }
 
-  .number-input {
-    width: 90px;
-    height: 58px;
-    font-size: 32px;
+  input{
+    width:63px;
+    height:45px;
+    font-size:25px;
   }
 
-  .calc-input {
-    width: 90px;
-    height: 60px;
-    font-size: 32px;
+  .calculation{
+    gap:5px;
+    padding:6px 9px;
+    font-size:20px;
+  }
+
+  .ruler{
+    height:108px;
+  }
+
+  .ruler-home{
+    height:134px;
   }
 }
 </style>
@@ -613,132 +675,175 @@ button {
 <div class="app">
 
   <header class="header">
-    <h1 class="title">テープの 長さを はかろう</h1>
 
-    <div class="header-buttons">
-      <button
-        type="button"
-        class="small-button"
-        id="calibrationOpenButton"
+    <h1>
+      テープの長さをはかろう
+    </h1>
+
+    <div class="header-right">
+
+      <div
+        class="progress"
+        id="progress"
       >
-        定規を合わせる
-      </button>
+        1 / 10
+      </div>
 
       <button
         type="button"
-        class="small-button"
+        class="reset-button"
         id="resetRulerButton"
       >
         定規をもどす
       </button>
+
     </div>
+
   </header>
 
   <p class="instruction">
-    定規を動かして長さをはかり、数字を書いて、たし算しましょう。
+    定規の0をテープの左端に合わせて、長さをはかりましょう。
   </p>
 
-  <main class="main-area">
+  <main
+    class="main"
+    id="main"
+  >
 
-    <div class="problem-number" id="problemNumber">①</div>
+    <div
+      class="problem-number"
+      id="problemNumber"
+    >
+      1もんめ
+    </div>
 
-    <section class="tape-zone">
+    <section class="tape-area">
 
       <div class="tape-row">
-        <div class="tape-name">テープ①</div>
 
-        <div class="tape-track">
-          <div class="tape tape-a" id="tapeA"></div>
+        <div class="tape-label">
+          テープ①
         </div>
 
-        <label class="measure-input-area">
+        <div class="tape-track">
+
+          <div class="start-line"></div>
+
+          <div
+            class="tape tape1"
+            id="tape1"
+          ></div>
+
+        </div>
+
+        <label class="answer-box">
+
           長さ
+
           <input
-            id="measureA"
-            class="number-input"
             type="number"
             inputmode="numeric"
-            min="0"
-            max="20"
-            aria-label="テープ1の長さ"
+            id="answer1"
           >
+
           cm
+
         </label>
+
       </div>
 
       <div class="tape-row">
-        <div class="tape-name">テープ②</div>
 
-        <div class="tape-track">
-          <div class="tape tape-b" id="tapeB"></div>
+        <div class="tape-label">
+          テープ②
         </div>
 
-        <label class="measure-input-area">
+        <div class="tape-track">
+
+          <div class="start-line"></div>
+
+          <div
+            class="tape tape2"
+            id="tape2"
+          ></div>
+
+        </div>
+
+        <label class="answer-box">
+
           長さ
+
           <input
-            id="measureB"
-            class="number-input"
             type="number"
             inputmode="numeric"
-            min="0"
-            max="20"
-            aria-label="テープ2の長さ"
+            id="answer2"
           >
+
           cm
+
         </label>
-      </div>
 
-      <div class="calculation">
-        <input
-          id="calcA"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-          aria-label="計算する1つ目の長さ"
-        >
-        <span>cm</span>
-
-        <span>＋</span>
-
-        <input
-          id="calcB"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-          aria-label="計算する2つ目の長さ"
-        >
-        <span>cm</span>
-
-        <span>＝</span>
-
-        <input
-          id="calcAnswer"
-          class="calc-input"
-          type="number"
-          inputmode="numeric"
-          aria-label="足し算の答え"
-        >
-        <span>cm</span>
       </div>
 
     </section>
 
-    <section class="ruler-area" id="rulerArea">
+    <div class="calculation">
 
-      <p class="ruler-help">
-        青い定規を、指で動かせます。
+      <input
+        type="number"
+        inputmode="numeric"
+        id="calc1"
+      >
+
+      <span>cm</span>
+
+      <span>＋</span>
+
+      <input
+        type="number"
+        inputmode="numeric"
+        id="calc2"
+      >
+
+      <span>cm</span>
+
+      <span>＝</span>
+
+      <input
+        type="number"
+        inputmode="numeric"
+        id="total"
+      >
+
+      <span>cm</span>
+
+    </div>
+
+    <div class="ruler-home">
+
+      <p class="ruler-home-text">
+        定規を動かして、テープの上に重ねてください。
       </p>
 
-      <div class="ruler" id="ruler">
-        <div class="ruler-scale" id="rulerScale"></div>
-        <div class="ruler-cm">cm</div>
+    </div>
+
+    <div
+      class="ruler"
+      id="ruler"
+    >
+
+      <div id="rulerScale"></div>
+
+      <div class="ruler-unit">
+        cm
       </div>
 
-    </section>
+    </div>
 
   </main>
 
-  <div class="actions">
+  <div class="buttons">
+
     <button
       type="button"
       class="action-button check-button"
@@ -751,53 +856,168 @@ button {
       type="button"
       class="action-button next-button"
       id="nextButton"
+      disabled
     >
       つぎのもんだい
     </button>
+
   </div>
 
-  <div class="result" id="result" aria-live="polite"></div>
+  <div
+    class="result"
+    id="result"
+    aria-live="polite"
+  ></div>
 
 </div>
 
-<div class="calibration-screen show" id="calibrationScreen">
+<div
+  class="judge-mark"
+  id="correctMark"
+>
+  <div class="circle-mark"></div>
+</div>
 
-  <div class="calibration-box">
+<div
+  class="judge-mark"
+  id="wrongMark"
+>
+  <div class="cross-mark"></div>
+</div>
 
-    <h2>定規の大きさを合わせよう</h2>
+<div
+  class="congratulations"
+  id="congratulations"
+>
 
-    <p>
-      本物の定規を画面に当てます。
-    </p>
+  <div class="congratulations-card">
 
-    <p>
-      下の赤い線が、本物の定規の10cmと同じ長さになるように、
-      つまみを動かしてください。
-    </p>
+    <h2 class="congratulations-title">
+      おめでとう！
+    </h2>
 
-    <div class="calibration-line-wrap">
-      <div class="calibration-line" id="calibrationLine"></div>
-      <div class="calibration-label">10cm</div>
-    </div>
-
-    <input
-      id="calibrationSlider"
-      class="calibration-slider"
-      type="range"
-      min="30"
-      max="75"
-      step="0.2"
-      value="48"
+    <svg
+      class="congratulations-picture"
+      viewBox="0 0 600 330"
+      role="img"
+      aria-label="お祝いの画像"
     >
 
-    <div class="calibration-value" id="calibrationValue"></div>
+      <defs>
+
+        <linearGradient
+          id="rainbow"
+          x1="0"
+          y1="0"
+          x2="1"
+          y2="1"
+        >
+          <stop offset="0%" stop-color="#ff4b6e"/>
+          <stop offset="25%" stop-color="#ffbd35"/>
+          <stop offset="50%" stop-color="#55c96b"/>
+          <stop offset="75%" stop-color="#4b9fea"/>
+          <stop offset="100%" stop-color="#9c61e8"/>
+        </linearGradient>
+
+      </defs>
+
+      <path
+        d="M105 250 A195 195 0 0 1 495 250"
+        fill="none"
+        stroke="url(#rainbow)"
+        stroke-width="45"
+        stroke-linecap="round"
+      />
+
+      <ellipse
+        cx="300"
+        cy="275"
+        rx="180"
+        ry="28"
+        fill="#d8f2ff"
+      />
+
+      <path
+        d="M250 235 L270 165 L300 215 L330 165 L350 235 Z"
+        fill="#ffd83d"
+        stroke="#e39800"
+        stroke-width="7"
+      />
+
+      <circle
+        cx="300"
+        cy="170"
+        r="14"
+        fill="#ff4b6e"
+      />
+
+      <circle
+        cx="270"
+        cy="150"
+        r="14"
+        fill="#4b9fea"
+      />
+
+      <circle
+        cx="330"
+        cy="150"
+        r="14"
+        fill="#55c96b"
+      />
+
+      <circle
+        cx="300"
+        cy="255"
+        r="72"
+        fill="#ffcf56"
+        stroke="#e49b00"
+        stroke-width="7"
+      />
+
+      <circle
+        cx="276"
+        cy="244"
+        r="7"
+        fill="#323232"
+      />
+
+      <circle
+        cx="324"
+        cy="244"
+        r="7"
+        fill="#323232"
+      />
+
+      <path
+        d="M274 274 Q300 298 326 274"
+        fill="none"
+        stroke="#d94f5c"
+        stroke-width="8"
+        stroke-linecap="round"
+      />
+
+      <path
+        d="M180 215 L193 242 L223 246 L201 267 L207 297 L180 283 L153 297 L159 267 L137 246 L167 242 Z"
+        fill="#ff5b86"
+      />
+
+      <path
+        d="M420 215 L433 242 L463 246 L441 267 L447 297 L420 283 L393 297 L399 267 L377 246 L407 242 Z"
+        fill="#55b7ff"
+      />
+
+    </svg>
+
+    <p class="congratulations-message">
+      10もん ぜんぶ せいかい！
+    </p>
 
     <button
       type="button"
-      class="calibration-button"
-      id="calibrationDoneButton"
+      class="restart-button"
+      id="restartButton"
     >
-      これで決定
+      もういちど
     </button>
 
   </div>
@@ -807,374 +1027,706 @@ button {
 <script>
 "use strict";
 
+const PIXELS_PER_CM = 52;
+const RULER_LENGTH_CM = 10;
+
+/* 定規の左端から0までの空白 */
+const RULER_LEFT_MARGIN = 22;
+const RULER_RIGHT_MARGIN = 22;
+
 const problems = [
-  { a: 4, b: 3 },
-  { a: 5, b: 2 },
-  { a: 6, b: 3 },
-  { a: 7, b: 2 },
-  { a: 5, b: 4 },
-  { a: 8, b: 3 },
-  { a: 6, b: 5 },
-  { a: 7, b: 4 }
+  {a:3,b:2},
+  {a:4,b:3},
+  {a:5,b:2},
+  {a:6,b:3},
+  {a:7,b:2},
+  {a:5,b:4},
+  {a:6,b:4},
+  {a:7,b:3},
+  {a:8,b:2},
+  {a:8,b:1}
 ];
 
-let problemIndex = 0;
-let pixelsPerCm = Number(
-  localStorage.getItem("tapePixelsPerCm")
-) || 48;
+let currentProblem = 0;
+let problemCleared = false;
+let markTimer = null;
 
-const problemNumber = document.getElementById("problemNumber");
-const tapeA = document.getElementById("tapeA");
-const tapeB = document.getElementById("tapeB");
+const main =
+  document.getElementById("main");
 
-const measureA = document.getElementById("measureA");
-const measureB = document.getElementById("measureB");
-const calcA = document.getElementById("calcA");
-const calcB = document.getElementById("calcB");
-const calcAnswer = document.getElementById("calcAnswer");
+const ruler =
+  document.getElementById("ruler");
 
-const result = document.getElementById("result");
+const rulerScale =
+  document.getElementById("rulerScale");
 
-const ruler = document.getElementById("ruler");
-const rulerScale = document.getElementById("rulerScale");
-const rulerArea = document.getElementById("rulerArea");
+const problemNumber =
+  document.getElementById("problemNumber");
 
-const calibrationScreen =
-  document.getElementById("calibrationScreen");
-const calibrationSlider =
-  document.getElementById("calibrationSlider");
-const calibrationLine =
-  document.getElementById("calibrationLine");
-const calibrationValue =
-  document.getElementById("calibrationValue");
+const progress =
+  document.getElementById("progress");
 
-const numberMarks = [
-  "①", "②", "③", "④",
-  "⑤", "⑥", "⑦", "⑧"
-];
+const tape1 =
+  document.getElementById("tape1");
 
-function updateCalibrationLine() {
-  const value = Number(calibrationSlider.value);
+const tape2 =
+  document.getElementById("tape2");
 
-  calibrationLine.style.width = (value * 10) + "px";
+const answer1 =
+  document.getElementById("answer1");
 
-  calibrationValue.textContent =
-    "現在の設定：" + value.toFixed(1) + "px ＝ 1cm";
-}
+const answer2 =
+  document.getElementById("answer2");
 
-function createRuler() {
-  const maximumCm = 15;
-  const totalWidth = maximumCm * pixelsPerCm;
+const calc1 =
+  document.getElementById("calc1");
 
-  ruler.style.width = totalWidth + "px";
+const calc2 =
+  document.getElementById("calc2");
+
+const total =
+  document.getElementById("total");
+
+const result =
+  document.getElementById("result");
+
+const correctMark =
+  document.getElementById("correctMark");
+
+const wrongMark =
+  document.getElementById("wrongMark");
+
+const congratulations =
+  document.getElementById("congratulations");
+
+const resetRulerButton =
+  document.getElementById("resetRulerButton");
+
+const checkButton =
+  document.getElementById("checkButton");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const restartButton =
+  document.getElementById("restartButton");
+
+function makeRuler(){
+
+  ruler.style.width =
+    RULER_LEFT_MARGIN +
+    RULER_LENGTH_CM * PIXELS_PER_CM +
+    RULER_RIGHT_MARGIN +
+    "px";
+
   rulerScale.innerHTML = "";
 
-  for (let mm = 0; mm <= maximumCm * 10; mm++) {
-    const position = mm * pixelsPerCm / 10;
+  for(
+    let millimeter = 0;
+    millimeter <= RULER_LENGTH_CM * 10;
+    millimeter++
+  ){
 
-    const tick = document.createElement("div");
-    tick.className = "tick";
-    tick.style.left = position + "px";
+    const x =
+      RULER_LEFT_MARGIN +
+      millimeter * PIXELS_PER_CM / 10;
 
-    if (mm % 10 === 0) {
-      tick.classList.add("large");
+    const tick =
+      document.createElement("div");
 
-      const number = document.createElement("div");
-      number.className = "ruler-number";
-      number.style.left = position + "px";
-      number.textContent = String(mm / 10);
+    tick.style.left =
+      x + "px";
+
+    if(millimeter % 10 === 0){
+
+      tick.className =
+        "tick cm";
+
+      const number =
+        document.createElement("div");
+
+      number.className =
+        "ruler-number";
+
+      number.style.left =
+        x + "px";
+
+      number.textContent =
+        String(millimeter / 10);
 
       rulerScale.appendChild(number);
 
-    } else if (mm % 5 === 0) {
-      tick.classList.add("middle");
+    }else if(millimeter % 5 === 0){
 
-    } else {
-      tick.classList.add("small");
+      tick.className =
+        "tick half";
+
+    }else{
+
+      tick.className =
+        "tick mm";
+
     }
 
     rulerScale.appendChild(tick);
+
   }
+
 }
 
-function showProblem() {
-  const problem = problems[problemIndex];
+function resetRuler(){
 
-  problemNumber.textContent =
-    numberMarks[problemIndex] || String(problemIndex + 1);
+  const left =
+    Math.max(
+      8,
+      (main.clientWidth - ruler.offsetWidth) / 2
+    );
 
-  tapeA.style.width = (problem.a * pixelsPerCm) + "px";
-  tapeB.style.width = (problem.b * pixelsPerCm) + "px";
+  const top =
+    Math.max(
+      8,
+      main.clientHeight -
+      ruler.offsetHeight -
+      23
+    );
 
-  clearInputs();
-  resetRulerPosition();
+  ruler.style.left =
+    left + "px";
+
+  ruler.style.top =
+    top + "px";
+
 }
 
-function clearInputs() {
-  const inputs = [
-    measureA,
-    measureB,
-    calcA,
-    calcB,
-    calcAnswer
-  ];
+function clearInputStyles(){
 
-  inputs.forEach(function(input) {
-    input.value = "";
-    input.classList.remove("correct-input", "wrong-input");
+  [
+    answer1,
+    answer2,
+    calc1,
+    calc2,
+    total
+  ].forEach(function(input){
+
+    input.classList.remove(
+      "correct-input",
+      "wrong-input"
+    );
+
   });
+
+}
+
+function clearInputs(){
+
+  [
+    answer1,
+    answer2,
+    calc1,
+    calc2,
+    total
+  ].forEach(function(input){
+
+    input.value = "";
+
+  });
+
+  clearInputStyles();
 
   result.textContent = "";
   result.className = "result";
+
+  problemCleared = false;
+
+  nextButton.disabled = true;
+  checkButton.disabled = false;
+
 }
 
-function resetRulerPosition() {
-  ruler.style.left = "90px";
-  ruler.style.top = "48px";
+function showProblem(){
+
+  const problem =
+    problems[currentProblem];
+
+  problemNumber.textContent =
+    currentProblem + 1 + "もんめ";
+
+  progress.textContent =
+    currentProblem + 1 +
+    " / " +
+    problems.length;
+
+  tape1.style.width =
+    problem.a * PIXELS_PER_CM + "px";
+
+  tape2.style.width =
+    problem.b * PIXELS_PER_CM + "px";
+
+  clearInputs();
+  resetRuler();
+
 }
 
-function setInputResult(input, isCorrect) {
-  input.classList.remove("correct-input", "wrong-input");
+function markInput(
+  input,
+  correct
+){
 
-  if (isCorrect) {
-    input.classList.add("correct-input");
-  } else {
-    input.classList.add("wrong-input");
+  input.classList.remove(
+    "correct-input",
+    "wrong-input"
+  );
+
+  input.classList.add(
+    correct
+      ? "correct-input"
+      : "wrong-input"
+  );
+
+}
+
+function showJudgeMark(
+  markElement
+){
+
+  clearTimeout(markTimer);
+
+  correctMark.classList.remove("show");
+  wrongMark.classList.remove("show");
+
+  void markElement.offsetWidth;
+
+  markElement.classList.add("show");
+
+  markTimer = setTimeout(function(){
+
+    markElement.classList.remove("show");
+
+  },720);
+
+}
+
+function checkAnswers(){
+
+  if(problemCleared){
+    return;
   }
-}
 
-function checkAnswers() {
-  const problem = problems[problemIndex];
+  const problem =
+    problems[currentProblem];
 
-  const enteredMeasureA = Number(measureA.value);
-  const enteredMeasureB = Number(measureB.value);
-  const enteredCalcA = Number(calcA.value);
-  const enteredCalcB = Number(calcB.value);
-  const enteredAnswer = Number(calcAnswer.value);
+  const inputs = [
+    answer1,
+    answer2,
+    calc1,
+    calc2,
+    total
+  ];
 
-  const allFilled = [
-    measureA,
-    measureB,
-    calcA,
-    calcB,
-    calcAnswer
-  ].every(function(input) {
-    return input.value.trim() !== "";
-  });
+  const allEntered =
+    inputs.every(function(input){
 
-  if (!allFilled) {
+      return input.value.trim() !== "";
+
+    });
+
+  if(!allEntered){
+
+    clearInputStyles();
+    showJudgeMark(wrongMark);
+
     result.textContent =
       "まだ書いていないところがあります。";
 
-    result.className = "result error-message";
+    result.className =
+      "result wrong-message";
+
+    return;
+
+  }
+
+  const checks = [
+    Number(answer1.value) === problem.a,
+    Number(answer2.value) === problem.b,
+    Number(calc1.value) === problem.a,
+    Number(calc2.value) === problem.b,
+    Number(total.value) === problem.a + problem.b
+  ];
+
+  inputs.forEach(function(
+    input,
+    index
+  ){
+
+    markInput(
+      input,
+      checks[index]
+    );
+
+  });
+
+  if(checks.every(Boolean)){
+
+    problemCleared = true;
+
+    showJudgeMark(correctMark);
+
+    result.textContent =
+      "せいかい！ じょうずにはかれました！";
+
+    result.className =
+      "result correct-message";
+
+    checkButton.disabled = true;
+
+    if(
+      currentProblem ===
+      problems.length - 1
+    ){
+
+      nextButton.disabled = true;
+
+      setTimeout(function(){
+
+        congratulations.classList.add(
+          "show"
+        );
+
+      },760);
+
+    }else{
+
+      nextButton.disabled = false;
+
+    }
+
+  }else{
+
+    showJudgeMark(wrongMark);
+
+    result.textContent =
+      "青いところを、もういちど見なおしましょう。";
+
+    result.className =
+      "result wrong-message";
+
+    nextButton.disabled = true;
+
+  }
+
+}
+
+function nextProblem(){
+
+  if(!problemCleared){
     return;
   }
 
-  const answerAOk = enteredMeasureA === problem.a;
-  const answerBOk = enteredMeasureB === problem.b;
+  if(
+    currentProblem <
+    problems.length - 1
+  ){
 
-  const calcAOk = enteredCalcA === problem.a;
-  const calcBOk = enteredCalcB === problem.b;
-  const totalOk =
-    enteredAnswer === problem.a + problem.b;
+    currentProblem++;
 
-  setInputResult(measureA, answerAOk);
-  setInputResult(measureB, answerBOk);
-  setInputResult(calcA, calcAOk);
-  setInputResult(calcB, calcBOk);
-  setInputResult(calcAnswer, totalOk);
+    showProblem();
 
-  if (
-    answerAOk &&
-    answerBOk &&
-    calcAOk &&
-    calcBOk &&
-    totalOk
-  ) {
-    result.textContent =
-      "せいかい！　じょうずにはかれました！";
-
-    result.className = "result correct-message";
-
-  } else {
-    result.textContent =
-      "赤いところを、もういちど見なおしましょう。";
-
-    result.className = "result error-message";
-  }
-}
-
-function nextProblem() {
-  problemIndex++;
-
-  if (problemIndex >= problems.length) {
-    problemIndex = 0;
   }
 
-  showProblem();
 }
 
-function applyCalibration() {
-  pixelsPerCm = Number(calibrationSlider.value);
+function restartGame(){
 
-  localStorage.setItem(
-    "tapePixelsPerCm",
-    String(pixelsPerCm)
+  currentProblem = 0;
+  problemCleared = false;
+
+  congratulations.classList.remove(
+    "show"
   );
 
-  createRuler();
   showProblem();
 
-  calibrationScreen.classList.remove("show");
 }
 
-function openCalibration() {
-  calibrationSlider.value = String(pixelsPerCm);
-  updateCalibrationLine();
-  calibrationScreen.classList.add("show");
+function clearResultAfterInput(){
+
+  if(problemCleared){
+    return;
+  }
+
+  result.textContent = "";
+  result.className = "result";
+
 }
+
+answer1.addEventListener(
+  "input",
+  function(){
+
+    if(!problemCleared){
+
+      calc1.value =
+        answer1.value;
+
+      answer1.classList.remove(
+        "correct-input",
+        "wrong-input"
+      );
+
+      calc1.classList.remove(
+        "correct-input",
+        "wrong-input"
+      );
+
+      clearResultAfterInput();
+
+    }
+
+  }
+);
+
+answer2.addEventListener(
+  "input",
+  function(){
+
+    if(!problemCleared){
+
+      calc2.value =
+        answer2.value;
+
+      answer2.classList.remove(
+        "correct-input",
+        "wrong-input"
+      );
+
+      calc2.classList.remove(
+        "correct-input",
+        "wrong-input"
+      );
+
+      clearResultAfterInput();
+
+    }
+
+  }
+);
+
+[
+  calc1,
+  calc2,
+  total
+].forEach(function(input){
+
+  input.addEventListener(
+    "input",
+    function(){
+
+      if(!problemCleared){
+
+        input.classList.remove(
+          "correct-input",
+          "wrong-input"
+        );
+
+        clearResultAfterInput();
+
+      }
+
+    }
+  );
+
+});
 
 let dragging = false;
-let pointerOffsetX = 0;
-let pointerOffsetY = 0;
+let offsetX = 0;
+let offsetY = 0;
 
-ruler.addEventListener("pointerdown", function(event) {
-  dragging = true;
-  ruler.classList.add("dragging");
+ruler.addEventListener(
+  "pointerdown",
+  function(event){
 
-  const rulerRect = ruler.getBoundingClientRect();
+    dragging = true;
 
-  pointerOffsetX = event.clientX - rulerRect.left;
-  pointerOffsetY = event.clientY - rulerRect.top;
+    ruler.classList.add(
+      "dragging"
+    );
 
-  ruler.setPointerCapture(event.pointerId);
-  event.preventDefault();
-});
+    const rect =
+      ruler.getBoundingClientRect();
 
-ruler.addEventListener("pointermove", function(event) {
-  if (!dragging) {
-    return;
+    offsetX =
+      event.clientX - rect.left;
+
+    offsetY =
+      event.clientY - rect.top;
+
+    try{
+
+      ruler.setPointerCapture(
+        event.pointerId
+      );
+
+    }catch(error){
+    }
+
+    event.preventDefault();
+
   }
+);
 
-  const areaRect = rulerArea.getBoundingClientRect();
-  const rulerRect = ruler.getBoundingClientRect();
+ruler.addEventListener(
+  "pointermove",
+  function(event){
 
-  let newLeft =
-    event.clientX - areaRect.left - pointerOffsetX;
+    if(!dragging){
+      return;
+    }
 
-  let newTop =
-    event.clientY - areaRect.top - pointerOffsetY;
+    const mainRect =
+      main.getBoundingClientRect();
 
-  const minimumLeft =
-    Math.min(0, areaRect.width - rulerRect.width);
+    let left =
+      event.clientX -
+      mainRect.left -
+      offsetX;
 
-  const maximumLeft =
-    Math.max(0, areaRect.width - rulerRect.width);
+    let top =
+      event.clientY -
+      mainRect.top -
+      offsetY;
 
-  const minimumTop = 0;
-  const maximumTop =
-    Math.max(0, areaRect.height - rulerRect.height);
+    const maxLeft =
+      Math.max(
+        0,
+        main.clientWidth -
+        ruler.offsetWidth
+      );
 
-  newLeft = Math.min(
-    maximumLeft,
-    Math.max(minimumLeft, newLeft)
-  );
+    const maxTop =
+      Math.max(
+        0,
+        main.clientHeight -
+        ruler.offsetHeight
+      );
 
-  newTop = Math.min(
-    maximumTop,
-    Math.max(minimumTop, newTop)
-  );
+    left =
+      Math.max(
+        0,
+        Math.min(maxLeft,left)
+      );
 
-  ruler.style.left = newLeft + "px";
-  ruler.style.top = newTop + "px";
+    top =
+      Math.max(
+        0,
+        Math.min(maxTop,top)
+      );
 
-  event.preventDefault();
-});
+    ruler.style.left =
+      left + "px";
 
-function stopDragging(event) {
-  if (!dragging) {
+    ruler.style.top =
+      top + "px";
+
+    event.preventDefault();
+
+  }
+);
+
+function stopDragging(
+  event
+){
+
+  if(!dragging){
     return;
   }
 
   dragging = false;
-  ruler.classList.remove("dragging");
 
-  try {
-    ruler.releasePointerCapture(event.pointerId);
-  } catch (error) {
-    // 何もしない
+  ruler.classList.remove(
+    "dragging"
+  );
+
+  try{
+
+    ruler.releasePointerCapture(
+      event.pointerId
+    );
+
+  }catch(error){
   }
+
 }
 
-ruler.addEventListener("pointerup", stopDragging);
-ruler.addEventListener("pointercancel", stopDragging);
-
-measureA.addEventListener("input", function() {
-  calcA.value = measureA.value;
-});
-
-measureB.addEventListener("input", function() {
-  calcB.value = measureB.value;
-});
-
-[
-  measureA,
-  measureB,
-  calcA,
-  calcB,
-  calcAnswer
-].forEach(function(input) {
-  input.addEventListener("input", function() {
-    input.classList.remove("correct-input", "wrong-input");
-    result.textContent = "";
-  });
-});
-
-document
-  .getElementById("checkButton")
-  .addEventListener("click", checkAnswers);
-
-document
-  .getElementById("nextButton")
-  .addEventListener("click", nextProblem);
-
-document
-  .getElementById("resetRulerButton")
-  .addEventListener("click", resetRulerPosition);
-
-document
-  .getElementById("calibrationOpenButton")
-  .addEventListener("click", openCalibration);
-
-calibrationSlider.addEventListener(
-  "input",
-  updateCalibrationLine
+ruler.addEventListener(
+  "pointerup",
+  stopDragging
 );
 
-document
-  .getElementById("calibrationDoneButton")
-  .addEventListener("click", applyCalibration);
+ruler.addEventListener(
+  "pointercancel",
+  stopDragging
+);
+
+resetRulerButton.addEventListener(
+  "click",
+  resetRuler
+);
+
+checkButton.addEventListener(
+  "click",
+  checkAnswers
+);
+
+nextButton.addEventListener(
+  "click",
+  nextProblem
+);
+
+restartButton.addEventListener(
+  "click",
+  restartGame
+);
+
+window.addEventListener(
+  "resize",
+  function(){
+
+    requestAnimationFrame(
+      resetRuler
+    );
+
+  }
+);
 
 document.addEventListener(
   "dblclick",
-  function(event) {
+  function(event){
+
     event.preventDefault();
+
   },
-  { passive: false }
+  {
+    passive:false
+  }
 );
 
 document.addEventListener(
   "gesturestart",
-  function(event) {
+  function(event){
+
     event.preventDefault();
+
   },
-  { passive: false }
+  {
+    passive:false
+  }
 );
 
-calibrationSlider.value = String(pixelsPerCm);
-updateCalibrationLine();
-createRuler();
-showProblem();
+makeRuler();
+
+requestAnimationFrame(
+  showProblem
+);
 </script>
 
 </body>
