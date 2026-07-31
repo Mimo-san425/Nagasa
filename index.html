@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1.0,
-  maximum-scale=1.0, user-scalable=no"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 <title>テープの長さをはかろう</title>
 
@@ -18,19 +17,21 @@
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   margin: 0;
-  overflow: hidden;
+  padding: 0;
+  overscroll-behavior: none;
 }
 
 body {
-  background: #eaf6ff;
-  color: #17212b;
+  background: #eaf5ff;
+  color: #16202a;
   font-family:
     "UD デジタル 教科書体 N-R",
     "Hiragino Sans",
     "Yu Gothic",
     sans-serif;
+  touch-action: manipulation;
 }
 
 button,
@@ -39,405 +40,569 @@ input {
 }
 
 button {
-  border: none;
-  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .app {
   width: 100%;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 14px 12px;
+  min-height: 100vh;
+  padding: 18px 22px 24px;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 18px;
+  margin-bottom: 14px;
 }
 
-h1 {
+.title {
   margin: 0;
-  color: #176aab;
-  font-size: clamp(27px, 3vw, 40px);
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.25;
+  color: #135f9c;
 }
 
-.reset-button {
-  min-height: 48px;
-  padding: 8px 16px;
+.header-buttons {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.small-button {
+  min-height: 54px;
+  padding: 8px 18px;
+  border: 0;
   border-radius: 14px;
-  background: #ffffff;
-  color: #176aab;
-  font-size: 18px;
-  font-weight: 900;
-  box-shadow: 0 4px 0 #b5d5e8;
+  background: #fff;
+  color: #135f9c;
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #b8d6eb;
 }
 
-.reset-button:active {
+.small-button:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 0 #b5d5e8;
+  box-shadow: 0 1px 0 #b8d6eb;
 }
 
 .instruction {
-  margin: 0 0 8px;
-  padding: 9px 14px;
-  border-radius: 14px;
-  background: #ffffff;
-  font-size: clamp(18px, 2vw, 25px);
-  font-weight: 900;
+  margin: 0 0 14px;
+  padding: 12px 18px;
+  border-radius: 15px;
+  background: #fff;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 800;
   text-align: center;
+  box-shadow: 0 3px 10px rgba(36, 91, 130, 0.12);
 }
 
-.main {
+.main-area {
   position: relative;
-  flex: 1;
-  min-height: 0;
+  width: 100%;
+  min-height: 540px;
+  padding: 18px;
+  border: 4px solid #7bbce8;
+  border-radius: 22px;
+  background: #fff;
   overflow: hidden;
-  border: 4px solid #78bce8;
-  border-radius: 20px;
-  background: #ffffff;
 }
 
 .problem-number {
   position: absolute;
-  top: 10px;
-  left: 12px;
-  z-index: 5;
-  width: 52px;
-  height: 52px;
+  top: 15px;
+  left: 18px;
+  width: 58px;
+  height: 58px;
   display: grid;
   place-items: center;
-  border: 4px solid #17212b;
+  border: 4px solid #17202a;
   border-radius: 50%;
-  background: #ffffff;
-  font-size: 28px;
+  background: #fff;
+  font-size: 30px;
   font-weight: 900;
 }
 
-.tape-area {
-  position: relative;
-  z-index: 2;
-  width: min(1050px, 94%);
-  margin: 58px auto 0;
+.tape-zone {
+  width: min(1000px, 88%);
+  margin: 54px auto 0;
 }
 
 .tape-row {
   display: grid;
-  grid-template-columns: 105px minmax(250px, 1fr) 210px;
+  grid-template-columns: 120px minmax(180px, 1fr) 245px;
   align-items: center;
-  gap: 14px;
-  min-height: 92px;
+  gap: 22px;
+  min-height: 106px;
+  margin-bottom: 12px;
 }
 
-.tape-label {
-  font-size: 22px;
+.tape-name {
+  font-size: 27px;
   font-weight: 900;
   text-align: center;
 }
 
 .tape-track {
   position: relative;
-  height: 70px;
+  height: 74px;
   display: flex;
   align-items: center;
-}
-
-.start-line {
-  position: absolute;
-  left: 0;
-  top: 4px;
-  width: 4px;
-  height: 62px;
-  background: #273b49;
+  padding-left: 4px;
+  border-left: 4px dashed #8ba3b5;
 }
 
 .tape {
-  height: 48px;
+  position: relative;
+  height: 58px;
   border: 3px solid;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.12);
 }
 
-.tape1 {
-  border-color: #d83d73;
+.tape::before,
+.tape::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 10px;
+  height: calc(100% + 6px);
   background:
+    linear-gradient(
+      135deg,
+      transparent 0 22%,
+      currentColor 23% 32%,
+      transparent 33% 48%,
+      currentColor 49% 58%,
+      transparent 59% 74%,
+      currentColor 75% 84%,
+      transparent 85%
+    );
+}
+
+.tape::before {
+  left: -7px;
+}
+
+.tape::after {
+  right: -7px;
+  transform: scaleX(-1);
+}
+
+.tape-a {
+  color: #e94d87;
+  border-color: #e94d87;
+  background-color: #ff9fc1;
+  background-image:
     radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.85) 0 4px,
+      rgba(255,255,255,.9) 0 4px,
       transparent 5px
-    ),
-    #ff9fc0;
+    );
   background-size: 28px 28px;
 }
 
-.tape2 {
-  border-color: #168ac8;
-  background:
+.tape-b {
+  color: #1995d3;
+  border-color: #1995d3;
+  background-color: #84d7fb;
+  background-image:
     repeating-linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.45) 0 8px,
+      rgba(255,255,255,.38) 0 8px,
       transparent 8px 18px
-    ),
-    #83d8fa;
+    );
 }
 
-.answer-box {
+.measure-input-area {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 7px;
-  font-size: 20px;
-  font-weight: 900;
+  gap: 9px;
+  font-size: 24px;
+  font-weight: 800;
 }
 
-input {
-  width: 76px;
-  height: 52px;
-  border: 4px solid #283a48;
-  border-radius: 12px;
-  background: #ffffff;
-  font-size: 29px;
+.number-input {
+  width: 105px;
+  height: 64px;
+  border: 4px solid #263746;
+  border-radius: 13px;
+  background: #fff;
+  color: #111;
+  font-size: 36px;
   font-weight: 900;
   text-align: center;
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-input:focus {
-  border-color: #1684d1;
-  box-shadow: 0 0 0 5px rgba(22, 132, 209, 0.15);
+.number-input:focus {
+  border-color: #147bc1;
+  box-shadow: 0 0 0 5px rgba(20,123,193,.15);
 }
 
 .calculation {
-  position: relative;
-  z-index: 2;
-  width: fit-content;
-  margin: 8px auto 0;
-  padding: 9px 15px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 3px solid #f6c445;
-  border-radius: 16px;
-  background: #fff9da;
-  font-size: 25px;
+  justify-content: center;
+  gap: 14px;
+  margin: 14px auto 8px;
+  padding: 14px 18px;
+  border: 3px solid #ffc949;
+  border-radius: 18px;
+  background: #fff9d9;
+  font-size: clamp(25px, 2.8vw, 36px);
   font-weight: 900;
 }
 
-.ruler-home {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 18px;
-  height: 125px;
-  border: 3px dashed #a7c8dd;
-  border-radius: 16px;
-  background: #f2faff;
-}
-
-.ruler-home-text {
-  margin: 8px 0 0;
-  color: #5e7788;
-  font-size: 18px;
+.calc-input {
+  width: 105px;
+  height: 66px;
+  border: 4px solid #263746;
+  border-radius: 13px;
+  background: #fff;
+  font-size: 36px;
   font-weight: 900;
   text-align: center;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-/* 定規 */
+.calc-input:focus {
+  border-color: #e09900;
+  box-shadow: 0 0 0 5px rgba(255,180,0,.18);
+}
+
+.ruler-area {
+  position: relative;
+  height: 170px;
+  margin-top: 12px;
+  border-top: 3px dashed #b6c7d4;
+}
+
+.ruler-help {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #496476;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  pointer-events: none;
+}
 
 .ruler {
   position: absolute;
-  z-index: 50;
-  height: 92px;
-  overflow: hidden;
-  border: 3px solid #296d9f;
-  border-radius: 6px;
+  left: 90px;
+  top: 48px;
+  height: 104px;
+  border: 4px solid #176fb0;
+  border-radius: 12px;
   background:
     linear-gradient(
       to bottom,
-      rgba(225, 246, 255, 0.78),
-      rgba(174, 219, 244, 0.65)
+      rgba(255,255,255,.75),
+      rgba(162,218,255,.72)
     );
-  box-shadow:
-    0 8px 17px rgba(0, 0, 0, 0.25),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.7);
-  cursor: grab;
+  box-shadow: 0 7px 13px rgba(0,0,0,.17);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  cursor: grab;
+  overflow: hidden;
+  z-index: 20;
 }
 
 .ruler.dragging {
   cursor: grabbing;
-  box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.32),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 20px rgba(0,0,0,.28);
 }
 
-.zero-line {
-  position: absolute;
-  left: 14px;
-  top: 0;
-  z-index: 3;
-  width: 4px;
+.ruler-scale {
+  position: relative;
   height: 100%;
-  background: #e32f4f;
-  pointer-events: none;
 }
 
 .tick {
   position: absolute;
   top: 0;
-  width: 1.5px;
-  background: #111820;
-  transform: translateX(-50%);
+  width: 2px;
+  background: #101820;
+  transform: translateX(-1px);
   pointer-events: none;
 }
 
-.tick.mm {
-  height: 18px;
+.tick.small {
+  height: 26px;
 }
 
-.tick.half {
-  width: 2px;
-  height: 28px;
+.tick.middle {
+  height: 38px;
 }
 
-.tick.cm {
-  width: 2.5px;
-  height: 41px;
+.tick.large {
+  width: 3px;
+  height: 53px;
+  transform: translateX(-1.5px);
 }
 
 .ruler-number {
   position: absolute;
-  top: 45px;
-  color: #101820;
+  top: 53px;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.ruler-cm {
+  position: absolute;
+  left: 12px;
+  bottom: 7px;
+  color: #135f9c;
   font-size: 18px;
   font-weight: 900;
-  transform: translateX(-50%);
   pointer-events: none;
 }
 
-.ruler-number.first {
-  transform: translateX(4px);
-}
-
-.ruler-number.last {
-  transform: translateX(calc(-100% - 4px));
-}
-
-.ruler-unit {
-  position: absolute;
-  left: 28px;
-  bottom: 7px;
-  color: #145f93;
-  font-size: 15px;
-  font-weight: 900;
-  pointer-events: none;
-}
-
-.buttons {
+.actions {
   display: flex;
   justify-content: center;
   gap: 18px;
-  margin-top: 9px;
+  margin-top: 16px;
 }
 
 .action-button {
-  min-width: 190px;
-  min-height: 55px;
-  padding: 8px 20px;
-  border-radius: 15px;
-  font-size: 23px;
+  min-width: 200px;
+  min-height: 64px;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 17px;
+  font-size: 27px;
   font-weight: 900;
 }
 
 .check-button {
-  color: #ffffff;
+  color: #fff;
   background: #1686d3;
-  box-shadow: 0 5px 0 #0b5d97;
+  box-shadow: 0 6px 0 #0b5b94;
 }
 
 .next-button {
-  color: #352700;
-  background: #ffd34f;
-  box-shadow: 0 5px 0 #c99b00;
+  color: #2d2100;
+  background: #ffd24e;
+  box-shadow: 0 6px 0 #c89a00;
 }
 
 .action-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 rgba(0,0,0,.28);
 }
 
 .result {
-  min-height: 36px;
-  margin-top: 5px;
-  font-size: 24px;
+  min-height: 52px;
+  margin-top: 12px;
+  font-size: 30px;
   font-weight: 900;
   text-align: center;
 }
 
-.correct {
-  color: #d92d68;
+.correct-message {
+  color: #d92765;
 }
 
-.wrong {
-  color: #176fae;
+.error-message {
+  color: #176fb0;
 }
 
 .correct-input {
-  border-color: #38a747 !important;
-  background: #def8dc !important;
+  background: #dff8dc !important;
+  border-color: #3aa846 !important;
 }
 
 .wrong-input {
-  border-color: #e23b61 !important;
-  background: #ffe0e7 !important;
+  background: #ffe0e6 !important;
+  border-color: #e33b62 !important;
 }
 
-@media (max-width: 900px) {
-  .app {
-    padding: 8px 9px;
-  }
+.calibration-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(20, 42, 58, .72);
+}
 
-  h1 {
-    font-size: 27px;
-  }
+.calibration-screen.show {
+  display: flex;
+}
 
-  .reset-button {
-    padding: 7px 11px;
-    font-size: 16px;
-  }
+.calibration-box {
+  width: min(760px, 96vw);
+  padding: 26px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 15px 45px rgba(0,0,0,.32);
+  text-align: center;
+}
 
-  .tape-area {
-    width: 96%;
+.calibration-box h2 {
+  margin: 0 0 14px;
+  color: #135f9c;
+  font-size: 34px;
+}
+
+.calibration-box p {
+  margin: 8px 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.calibration-line-wrap {
+  max-width: 100%;
+  margin: 25px auto 18px;
+  overflow-x: auto;
+  padding: 12px 0;
+}
+
+.calibration-line {
+  position: relative;
+  height: 28px;
+  margin: 0 auto;
+  border-top: 7px solid #e64545;
+}
+
+.calibration-line::before,
+.calibration-line::after {
+  content: "";
+  position: absolute;
+  top: -16px;
+  width: 7px;
+  height: 26px;
+  background: #e64545;
+}
+
+.calibration-line::before {
+  left: 0;
+}
+
+.calibration-line::after {
+  right: 0;
+}
+
+.calibration-label {
+  margin-top: 8px;
+  color: #d52e2e;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.calibration-slider {
+  width: min(600px, 90%);
+  height: 40px;
+}
+
+.calibration-value {
+  margin: 8px 0 15px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.calibration-button {
+  min-width: 210px;
+  min-height: 62px;
+  border: 0;
+  border-radius: 16px;
+  color: #fff;
+  background: #1686d3;
+  font-size: 27px;
+  font-weight: 900;
+  box-shadow: 0 6px 0 #0b5b94;
+}
+
+@media (orientation: portrait) {
+  .header {
+    align-items: flex-start;
   }
 
   .tape-row {
-    grid-template-columns: 82px minmax(180px, 1fr) 175px;
-    gap: 8px;
-    min-height: 84px;
+    grid-template-columns: 90px minmax(160px, 1fr);
   }
 
-  .tape-label {
-    font-size: 18px;
+  .measure-input-area {
+    grid-column: 1 / -1;
+    justify-content: center;
   }
 
-  .answer-box {
-    font-size: 17px;
-  }
-
-  input {
-    width: 66px;
-    height: 48px;
-    font-size: 26px;
+  .main-area {
+    min-height: 760px;
   }
 
   .calculation {
-    gap: 5px;
-    padding: 7px 10px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 850px) {
+  .app {
+    padding: 12px;
+  }
+
+  .header {
+    gap: 8px;
+  }
+
+  .header-buttons {
+    gap: 7px;
+  }
+
+  .small-button {
+    min-height: 48px;
+    padding: 7px 11px;
+    font-size: 17px;
+  }
+
+  .main-area {
+    padding: 12px;
+  }
+
+  .tape-zone {
+    width: 95%;
+  }
+
+  .tape-row {
+    grid-template-columns: 90px minmax(170px, 1fr) 210px;
+    gap: 12px;
+  }
+
+  .tape-name {
+    font-size: 23px;
+  }
+
+  .measure-input-area {
     font-size: 21px;
+  }
+
+  .number-input {
+    width: 90px;
+    height: 58px;
+    font-size: 32px;
+  }
+
+  .calc-input {
+    width: 90px;
+    height: 60px;
+    font-size: 32px;
   }
 }
 </style>
@@ -447,167 +612,133 @@ input:focus {
 
 <div class="app">
 
-  <div class="header">
+  <header class="header">
+    <h1 class="title">テープの 長さを はかろう</h1>
 
-    <h1>
-      テープの長さをはかろう
-    </h1>
+    <div class="header-buttons">
+      <button
+        type="button"
+        class="small-button"
+        id="calibrationOpenButton"
+      >
+        定規を合わせる
+      </button>
 
-    <button
-      type="button"
-      class="reset-button"
-      id="resetRulerButton"
-    >
-      定規をもどす
-    </button>
-
-  </div>
+      <button
+        type="button"
+        class="small-button"
+        id="resetRulerButton"
+      >
+        定規をもどす
+      </button>
+    </div>
+  </header>
 
   <p class="instruction">
-    定規の0をテープの左端に合わせて、長さをはかりましょう。
+    定規を動かして長さをはかり、数字を書いて、たし算しましょう。
   </p>
 
-  <main
-    class="main"
-    id="main"
-  >
+  <main class="main-area">
 
-    <div
-      class="problem-number"
-      id="problemNumber"
-    >
-      ①
-    </div>
+    <div class="problem-number" id="problemNumber">①</div>
 
-    <section class="tape-area">
+    <section class="tape-zone">
 
       <div class="tape-row">
-
-        <div class="tape-label">
-          テープ①
-        </div>
+        <div class="tape-name">テープ①</div>
 
         <div class="tape-track">
-
-          <div class="start-line"></div>
-
-          <div
-            class="tape tape1"
-            id="tape1"
-          ></div>
-
+          <div class="tape tape-a" id="tapeA"></div>
         </div>
 
-        <label class="answer-box">
-
+        <label class="measure-input-area">
           長さ
-
           <input
+            id="measureA"
+            class="number-input"
             type="number"
             inputmode="numeric"
-            id="answer1"
+            min="0"
+            max="20"
+            aria-label="テープ1の長さ"
           >
-
           cm
-
         </label>
-
       </div>
 
       <div class="tape-row">
-
-        <div class="tape-label">
-          テープ②
-        </div>
+        <div class="tape-name">テープ②</div>
 
         <div class="tape-track">
-
-          <div class="start-line"></div>
-
-          <div
-            class="tape tape2"
-            id="tape2"
-          ></div>
-
+          <div class="tape tape-b" id="tapeB"></div>
         </div>
 
-        <label class="answer-box">
-
+        <label class="measure-input-area">
           長さ
-
           <input
+            id="measureB"
+            class="number-input"
             type="number"
             inputmode="numeric"
-            id="answer2"
+            min="0"
+            max="20"
+            aria-label="テープ2の長さ"
           >
-
           cm
-
         </label>
+      </div>
 
+      <div class="calculation">
+        <input
+          id="calcA"
+          class="calc-input"
+          type="number"
+          inputmode="numeric"
+          aria-label="計算する1つ目の長さ"
+        >
+        <span>cm</span>
+
+        <span>＋</span>
+
+        <input
+          id="calcB"
+          class="calc-input"
+          type="number"
+          inputmode="numeric"
+          aria-label="計算する2つ目の長さ"
+        >
+        <span>cm</span>
+
+        <span>＝</span>
+
+        <input
+          id="calcAnswer"
+          class="calc-input"
+          type="number"
+          inputmode="numeric"
+          aria-label="足し算の答え"
+        >
+        <span>cm</span>
       </div>
 
     </section>
 
-    <div class="calculation">
+    <section class="ruler-area" id="rulerArea">
 
-      <input
-        type="number"
-        inputmode="numeric"
-        id="calc1"
-      >
-
-      <span>cm</span>
-
-      <span>＋</span>
-
-      <input
-        type="number"
-        inputmode="numeric"
-        id="calc2"
-      >
-
-      <span>cm</span>
-
-      <span>＝</span>
-
-      <input
-        type="number"
-        inputmode="numeric"
-        id="total"
-      >
-
-      <span>cm</span>
-
-    </div>
-
-    <div class="ruler-home">
-
-      <p class="ruler-home-text">
-        定規を動かして、テープの上に重ねてください。
+      <p class="ruler-help">
+        青い定規を、指で動かせます。
       </p>
 
-    </div>
-
-    <div
-      class="ruler"
-      id="ruler"
-    >
-
-      <div class="zero-line"></div>
-
-      <div id="rulerScale"></div>
-
-      <div class="ruler-unit">
-        cm
+      <div class="ruler" id="ruler">
+        <div class="ruler-scale" id="rulerScale"></div>
+        <div class="ruler-cm">cm</div>
       </div>
 
-    </div>
+    </section>
 
   </main>
 
-  <div class="buttons">
-
+  <div class="actions">
     <button
       type="button"
       class="action-button check-button"
@@ -623,23 +754,58 @@ input:focus {
     >
       つぎのもんだい
     </button>
-
   </div>
 
-  <div
-    class="result"
-    id="result"
-  ></div>
+  <div class="result" id="result" aria-live="polite"></div>
+
+</div>
+
+<div class="calibration-screen show" id="calibrationScreen">
+
+  <div class="calibration-box">
+
+    <h2>定規の大きさを合わせよう</h2>
+
+    <p>
+      本物の定規を画面に当てます。
+    </p>
+
+    <p>
+      下の赤い線が、本物の定規の10cmと同じ長さになるように、
+      つまみを動かしてください。
+    </p>
+
+    <div class="calibration-line-wrap">
+      <div class="calibration-line" id="calibrationLine"></div>
+      <div class="calibration-label">10cm</div>
+    </div>
+
+    <input
+      id="calibrationSlider"
+      class="calibration-slider"
+      type="range"
+      min="30"
+      max="75"
+      step="0.2"
+      value="48"
+    >
+
+    <div class="calibration-value" id="calibrationValue"></div>
+
+    <button
+      type="button"
+      class="calibration-button"
+      id="calibrationDoneButton"
+    >
+      これで決定
+    </button>
+
+  </div>
 
 </div>
 
 <script>
 "use strict";
-
-const PIXELS_PER_CM = 46;
-const RULER_LENGTH_CM = 10;
-const RULER_LEFT_MARGIN = 14;
-const RULER_RIGHT_MARGIN = 14;
 
 const problems = [
   { a: 4, b: 3 },
@@ -647,508 +813,347 @@ const problems = [
   { a: 6, b: 3 },
   { a: 7, b: 2 },
   { a: 5, b: 4 },
-  { a: 6, b: 4 },
-  { a: 7, b: 3 },
-  { a: 8, b: 2 }
+  { a: 8, b: 3 },
+  { a: 6, b: 5 },
+  { a: 7, b: 4 }
 ];
 
-const problemMarks = [
+let problemIndex = 0;
+let pixelsPerCm = Number(
+  localStorage.getItem("tapePixelsPerCm")
+) || 48;
+
+const problemNumber = document.getElementById("problemNumber");
+const tapeA = document.getElementById("tapeA");
+const tapeB = document.getElementById("tapeB");
+
+const measureA = document.getElementById("measureA");
+const measureB = document.getElementById("measureB");
+const calcA = document.getElementById("calcA");
+const calcB = document.getElementById("calcB");
+const calcAnswer = document.getElementById("calcAnswer");
+
+const result = document.getElementById("result");
+
+const ruler = document.getElementById("ruler");
+const rulerScale = document.getElementById("rulerScale");
+const rulerArea = document.getElementById("rulerArea");
+
+const calibrationScreen =
+  document.getElementById("calibrationScreen");
+const calibrationSlider =
+  document.getElementById("calibrationSlider");
+const calibrationLine =
+  document.getElementById("calibrationLine");
+const calibrationValue =
+  document.getElementById("calibrationValue");
+
+const numberMarks = [
   "①", "②", "③", "④",
   "⑤", "⑥", "⑦", "⑧"
 ];
 
-let currentProblem = 0;
+function updateCalibrationLine() {
+  const value = Number(calibrationSlider.value);
 
-const main =
-  document.getElementById("main");
+  calibrationLine.style.width = (value * 10) + "px";
 
-const ruler =
-  document.getElementById("ruler");
+  calibrationValue.textContent =
+    "現在の設定：" + value.toFixed(1) + "px ＝ 1cm";
+}
 
-const rulerScale =
-  document.getElementById("rulerScale");
+function createRuler() {
+  const maximumCm = 15;
+  const totalWidth = maximumCm * pixelsPerCm;
 
-const problemNumber =
-  document.getElementById("problemNumber");
-
-const tape1 =
-  document.getElementById("tape1");
-
-const tape2 =
-  document.getElementById("tape2");
-
-const answer1 =
-  document.getElementById("answer1");
-
-const answer2 =
-  document.getElementById("answer2");
-
-const calc1 =
-  document.getElementById("calc1");
-
-const calc2 =
-  document.getElementById("calc2");
-
-const total =
-  document.getElementById("total");
-
-const result =
-  document.getElementById("result");
-
-const resetRulerButton =
-  document.getElementById("resetRulerButton");
-
-const checkButton =
-  document.getElementById("checkButton");
-
-const nextButton =
-  document.getElementById("nextButton");
-
-function makeRuler() {
-
-  ruler.style.width =
-    RULER_LEFT_MARGIN +
-    RULER_LENGTH_CM * PIXELS_PER_CM +
-    RULER_RIGHT_MARGIN +
-    "px";
-
+  ruler.style.width = totalWidth + "px";
   rulerScale.innerHTML = "";
 
-  for (
-    let millimeter = 0;
-    millimeter <= RULER_LENGTH_CM * 10;
-    millimeter++
-  ) {
+  for (let mm = 0; mm <= maximumCm * 10; mm++) {
+    const position = mm * pixelsPerCm / 10;
 
-    const x =
-      RULER_LEFT_MARGIN +
-      millimeter * PIXELS_PER_CM / 10;
+    const tick = document.createElement("div");
+    tick.className = "tick";
+    tick.style.left = position + "px";
 
-    const tick =
-      document.createElement("div");
+    if (mm % 10 === 0) {
+      tick.classList.add("large");
 
-    tick.style.left =
-      x + "px";
-
-    if (millimeter % 10 === 0) {
-
-      tick.className =
-        "tick cm";
-
-      const number =
-        document.createElement("div");
-
-      number.className =
-        "ruler-number";
-
-      number.style.left =
-        x + "px";
-
-      number.textContent =
-        String(millimeter / 10);
-
-      if (millimeter === 0) {
-        number.classList.add("first");
-      }
-
-      if (
-        millimeter ===
-        RULER_LENGTH_CM * 10
-      ) {
-        number.classList.add("last");
-      }
+      const number = document.createElement("div");
+      number.className = "ruler-number";
+      number.style.left = position + "px";
+      number.textContent = String(mm / 10);
 
       rulerScale.appendChild(number);
 
-    } else if (millimeter % 5 === 0) {
-
-      tick.className =
-        "tick half";
+    } else if (mm % 5 === 0) {
+      tick.classList.add("middle");
 
     } else {
-
-      tick.className =
-        "tick mm";
-
+      tick.classList.add("small");
     }
 
     rulerScale.appendChild(tick);
-
   }
-
 }
 
-function resetRuler() {
+function showProblem() {
+  const problem = problems[problemIndex];
 
-  const left =
-    Math.max(
-      10,
-      (main.clientWidth - ruler.offsetWidth) / 2
-    );
+  problemNumber.textContent =
+    numberMarks[problemIndex] || String(problemIndex + 1);
 
-  const top =
-    Math.max(
-      10,
-      main.clientHeight -
-      ruler.offsetHeight -
-      32
-    );
+  tapeA.style.width = (problem.a * pixelsPerCm) + "px";
+  tapeB.style.width = (problem.b * pixelsPerCm) + "px";
 
-  ruler.style.left =
-    left + "px";
-
-  ruler.style.top =
-    top + "px";
-
+  clearInputs();
+  resetRulerPosition();
 }
 
 function clearInputs() {
+  const inputs = [
+    measureA,
+    measureB,
+    calcA,
+    calcB,
+    calcAnswer
+  ];
 
-  [
-    answer1,
-    answer2,
-    calc1,
-    calc2,
-    total
-  ].forEach(function(input) {
-
+  inputs.forEach(function(input) {
     input.value = "";
-
-    input.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
-
+    input.classList.remove("correct-input", "wrong-input");
   });
 
   result.textContent = "";
   result.className = "result";
-
 }
 
-function showProblem() {
-
-  const problem =
-    problems[currentProblem];
-
-  problemNumber.textContent =
-    problemMarks[currentProblem];
-
-  tape1.style.width =
-    problem.a * PIXELS_PER_CM + "px";
-
-  tape2.style.width =
-    problem.b * PIXELS_PER_CM + "px";
-
-  clearInputs();
-  resetRuler();
-
+function resetRulerPosition() {
+  ruler.style.left = "90px";
+  ruler.style.top = "48px";
 }
 
-function markInput(
-  input,
-  correct
-) {
+function setInputResult(input, isCorrect) {
+  input.classList.remove("correct-input", "wrong-input");
 
-  input.classList.remove(
-    "correct-input",
-    "wrong-input"
-  );
-
-  input.classList.add(
-    correct
-      ? "correct-input"
-      : "wrong-input"
-  );
-
+  if (isCorrect) {
+    input.classList.add("correct-input");
+  } else {
+    input.classList.add("wrong-input");
+  }
 }
 
 function checkAnswers() {
+  const problem = problems[problemIndex];
 
-  const problem =
-    problems[currentProblem];
+  const enteredMeasureA = Number(measureA.value);
+  const enteredMeasureB = Number(measureB.value);
+  const enteredCalcA = Number(calcA.value);
+  const enteredCalcB = Number(calcB.value);
+  const enteredAnswer = Number(calcAnswer.value);
 
-  const inputs = [
-    answer1,
-    answer2,
-    calc1,
-    calc2,
-    total
-  ];
+  const allFilled = [
+    measureA,
+    measureB,
+    calcA,
+    calcB,
+    calcAnswer
+  ].every(function(input) {
+    return input.value.trim() !== "";
+  });
 
-  const allEntered =
-    inputs.every(function(input) {
-      return input.value.trim() !== "";
-    });
-
-  if (!allEntered) {
-
+  if (!allFilled) {
     result.textContent =
       "まだ書いていないところがあります。";
 
-    result.className =
-      "result wrong";
-
+    result.className = "result error-message";
     return;
-
   }
 
-  const checks = [
-    Number(answer1.value) === problem.a,
-    Number(answer2.value) === problem.b,
-    Number(calc1.value) === problem.a,
-    Number(calc2.value) === problem.b,
-    Number(total.value) === problem.a + problem.b
-  ];
+  const answerAOk = enteredMeasureA === problem.a;
+  const answerBOk = enteredMeasureB === problem.b;
 
-  inputs.forEach(function(input, index) {
+  const calcAOk = enteredCalcA === problem.a;
+  const calcBOk = enteredCalcB === problem.b;
+  const totalOk =
+    enteredAnswer === problem.a + problem.b;
 
-    markInput(
-      input,
-      checks[index]
-    );
+  setInputResult(measureA, answerAOk);
+  setInputResult(measureB, answerBOk);
+  setInputResult(calcA, calcAOk);
+  setInputResult(calcB, calcBOk);
+  setInputResult(calcAnswer, totalOk);
 
-  });
-
-  if (checks.every(Boolean)) {
-
+  if (
+    answerAOk &&
+    answerBOk &&
+    calcAOk &&
+    calcBOk &&
+    totalOk
+  ) {
     result.textContent =
-      "せいかい！ じょうずにはかれました！";
+      "せいかい！　じょうずにはかれました！";
 
-    result.className =
-      "result correct";
+    result.className = "result correct-message";
 
   } else {
-
     result.textContent =
       "赤いところを、もういちど見なおしましょう。";
 
-    result.className =
-      "result wrong";
-
+    result.className = "result error-message";
   }
-
 }
 
 function nextProblem() {
+  problemIndex++;
 
-  currentProblem++;
-
-  if (
-    currentProblem >= problems.length
-  ) {
-    currentProblem = 0;
+  if (problemIndex >= problems.length) {
+    problemIndex = 0;
   }
 
   showProblem();
-
 }
 
-answer1.addEventListener(
-  "input",
-  function() {
+function applyCalibration() {
+  pixelsPerCm = Number(calibrationSlider.value);
 
-    calc1.value =
-      answer1.value;
-
-    answer1.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
-
-    calc1.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
-
-    result.textContent = "";
-
-  }
-);
-
-answer2.addEventListener(
-  "input",
-  function() {
-
-    calc2.value =
-      answer2.value;
-
-    answer2.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
-
-    calc2.classList.remove(
-      "correct-input",
-      "wrong-input"
-    );
-
-    result.textContent = "";
-
-  }
-);
-
-[
-  calc1,
-  calc2,
-  total
-].forEach(function(input) {
-
-  input.addEventListener(
-    "input",
-    function() {
-
-      input.classList.remove(
-        "correct-input",
-        "wrong-input"
-      );
-
-      result.textContent = "";
-
-    }
+  localStorage.setItem(
+    "tapePixelsPerCm",
+    String(pixelsPerCm)
   );
 
-});
+  createRuler();
+  showProblem();
 
-/* 定規のドラッグ */
+  calibrationScreen.classList.remove("show");
+}
+
+function openCalibration() {
+  calibrationSlider.value = String(pixelsPerCm);
+  updateCalibrationLine();
+  calibrationScreen.classList.add("show");
+}
 
 let dragging = false;
-let offsetX = 0;
-let offsetY = 0;
+let pointerOffsetX = 0;
+let pointerOffsetY = 0;
 
-ruler.addEventListener(
-  "pointerdown",
-  function(event) {
+ruler.addEventListener("pointerdown", function(event) {
+  dragging = true;
+  ruler.classList.add("dragging");
 
-    dragging = true;
+  const rulerRect = ruler.getBoundingClientRect();
 
-    ruler.classList.add("dragging");
+  pointerOffsetX = event.clientX - rulerRect.left;
+  pointerOffsetY = event.clientY - rulerRect.top;
 
-    const rect =
-      ruler.getBoundingClientRect();
+  ruler.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
 
-    offsetX =
-      event.clientX - rect.left;
-
-    offsetY =
-      event.clientY - rect.top;
-
-    try {
-      ruler.setPointerCapture(
-        event.pointerId
-      );
-    } catch (error) {
-    }
-
-    event.preventDefault();
-
+ruler.addEventListener("pointermove", function(event) {
+  if (!dragging) {
+    return;
   }
-);
 
-ruler.addEventListener(
-  "pointermove",
-  function(event) {
+  const areaRect = rulerArea.getBoundingClientRect();
+  const rulerRect = ruler.getBoundingClientRect();
 
-    if (!dragging) {
-      return;
-    }
+  let newLeft =
+    event.clientX - areaRect.left - pointerOffsetX;
 
-    const mainRect =
-      main.getBoundingClientRect();
+  let newTop =
+    event.clientY - areaRect.top - pointerOffsetY;
 
-    let left =
-      event.clientX -
-      mainRect.left -
-      offsetX;
+  const minimumLeft =
+    Math.min(0, areaRect.width - rulerRect.width);
 
-    let top =
-      event.clientY -
-      mainRect.top -
-      offsetY;
+  const maximumLeft =
+    Math.max(0, areaRect.width - rulerRect.width);
 
-    const maxLeft =
-      Math.max(
-        0,
-        main.clientWidth -
-        ruler.offsetWidth
-      );
+  const minimumTop = 0;
+  const maximumTop =
+    Math.max(0, areaRect.height - rulerRect.height);
 
-    const maxTop =
-      Math.max(
-        0,
-        main.clientHeight -
-        ruler.offsetHeight
-      );
+  newLeft = Math.min(
+    maximumLeft,
+    Math.max(minimumLeft, newLeft)
+  );
 
-    left =
-      Math.max(
-        0,
-        Math.min(maxLeft, left)
-      );
+  newTop = Math.min(
+    maximumTop,
+    Math.max(minimumTop, newTop)
+  );
 
-    top =
-      Math.max(
-        0,
-        Math.min(maxTop, top)
-      );
+  ruler.style.left = newLeft + "px";
+  ruler.style.top = newTop + "px";
 
-    ruler.style.left =
-      left + "px";
-
-    ruler.style.top =
-      top + "px";
-
-    event.preventDefault();
-
-  }
-);
+  event.preventDefault();
+});
 
 function stopDragging(event) {
+  if (!dragging) {
+    return;
+  }
 
   dragging = false;
-
   ruler.classList.remove("dragging");
 
   try {
-    ruler.releasePointerCapture(
-      event.pointerId
-    );
+    ruler.releasePointerCapture(event.pointerId);
   } catch (error) {
+    // 何もしない
   }
-
 }
 
-ruler.addEventListener(
-  "pointerup",
-  stopDragging
+ruler.addEventListener("pointerup", stopDragging);
+ruler.addEventListener("pointercancel", stopDragging);
+
+measureA.addEventListener("input", function() {
+  calcA.value = measureA.value;
+});
+
+measureB.addEventListener("input", function() {
+  calcB.value = measureB.value;
+});
+
+[
+  measureA,
+  measureB,
+  calcA,
+  calcB,
+  calcAnswer
+].forEach(function(input) {
+  input.addEventListener("input", function() {
+    input.classList.remove("correct-input", "wrong-input");
+    result.textContent = "";
+  });
+});
+
+document
+  .getElementById("checkButton")
+  .addEventListener("click", checkAnswers);
+
+document
+  .getElementById("nextButton")
+  .addEventListener("click", nextProblem);
+
+document
+  .getElementById("resetRulerButton")
+  .addEventListener("click", resetRulerPosition);
+
+document
+  .getElementById("calibrationOpenButton")
+  .addEventListener("click", openCalibration);
+
+calibrationSlider.addEventListener(
+  "input",
+  updateCalibrationLine
 );
 
-ruler.addEventListener(
-  "pointercancel",
-  stopDragging
-);
-
-resetRulerButton.addEventListener(
-  "click",
-  resetRuler
-);
-
-checkButton.addEventListener(
-  "click",
-  checkAnswers
-);
-
-nextButton.addEventListener(
-  "click",
-  nextProblem
-);
-
-window.addEventListener(
-  "resize",
-  function() {
-    requestAnimationFrame(resetRuler);
-  }
-);
+document
+  .getElementById("calibrationDoneButton")
+  .addEventListener("click", applyCalibration);
 
 document.addEventListener(
   "dblclick",
@@ -1166,11 +1171,10 @@ document.addEventListener(
   { passive: false }
 );
 
-makeRuler();
-
-requestAnimationFrame(
-  showProblem
-);
+calibrationSlider.value = String(pixelsPerCm);
+updateCalibrationLine();
+createRuler();
+showProblem();
 </script>
 
 </body>
